@@ -11,6 +11,7 @@ const Button = ({ text, handleClick }) => (
     </button>
 )
 
+// tarpeeton ilmeisesti?
 const Display = ({ text, counter }) => (
     <div>{text} {counter}</div>
 )
@@ -21,16 +22,20 @@ const App = () => {
     const [good, setGood] = useState(0)
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
+    const [total, setTotal] = useState(0)
 
     const addGood = () => {
+        setTotal(total +1)
         setGood(good +1)
     }
 
     const addNeutral = () => {
+        setTotal(total +1)
         setNeutral(neutral +1)
     }
 
     const addBad = () => {
+        setTotal(total +1)
         setBad(bad +1)
     }
 
@@ -44,6 +49,9 @@ const App = () => {
             <Display text='good' counter={good} />
             <Display text='neutral' counter={neutral} />
             <Display text='bad' counter={bad} />
+            <div>all {total}</div>
+            <div>average {(good-bad)/total}</div>
+            <div>positive {good/total} %</div>
         </div>
     )
 }
