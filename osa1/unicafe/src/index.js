@@ -11,10 +11,20 @@ const Button = ({ text, handleClick }) => (
     </button>
 )
 
-// tarpeeton ilmeisesti?
-const Display = ({ text, counter }) => (
-    <div>{text} {counter}</div>
-)
+const Statistics = ({ good, neutral, bad, total }) => {
+    return (
+        <>
+            <div>good {good}</div>
+            <div>neutral {neutral}</div>
+            <div>bad {bad}</div>
+            <div>all {total}</div>
+            <div>
+                average {(good-bad)/total}
+            </div>
+            <div>positive {good/total} %</div>
+        </>
+    )
+}
 
 
 const App = () => {
@@ -46,12 +56,12 @@ const App = () => {
             <Button text='neutral' handleClick={addNeutral} />
             <Button text='bad' handleClick={addBad} />
             <Header text='statistics' />
-            <Display text='good' counter={good} />
-            <Display text='neutral' counter={neutral} />
-            <Display text='bad' counter={bad} />
-            <div>all {total}</div>
-            <div>average {(good-bad)/total}</div>
-            <div>positive {good/total} %</div>
+            <Statistics
+                good={good}
+                neutral={neutral}
+                bad={bad}
+                total={total}
+            />
         </div>
     )
 }
