@@ -18,11 +18,18 @@ const Content = ({ course }) => {
     )
 }
 
+const Total = ({ parts }) => {
+    const sum = parts.map( part => part.exercises).reduce( (a, b) => a+b)
+
+    return <b>total of {sum} exercises</b>
+}
+
 const Course = ({ course }) => {
     return (
         <div>
             <Header name={course.name} />
             <Content course={course} />
+            <Total parts={course.parts} />
         </div>
     )
 }

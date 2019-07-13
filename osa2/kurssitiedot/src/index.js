@@ -2,18 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Course from './components/Course'
 
-/*
-const Total = (props) => {
-    const exs = props.course.parts.map( part => part.exercises )
-    const total = exs.reduce((a,b) => a+b, 0)
-
-    return (
-        <div>
-            <p>Number of exercises {total}</p>
-        </div>
-    )
-}*/
-
 const App = () => {
     const course = {
         name: 'Half Stack application development',
