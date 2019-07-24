@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Course from './components/Course'
 
-const App = () => {
+const App = (props) => {
+
     const courses = [
         {
             name: 'Half Stack application development',
