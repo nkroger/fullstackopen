@@ -14,6 +14,8 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const setFilterTo = (value) => setFilter(value)
+
   useEffect(() => {
     axios
       .get(apiUrl)
@@ -26,7 +28,7 @@ const App = () => {
   return (
     <div>
       <Filter filter={filter} handleChange={handleFilterUpdate} />
-      <Display countries={countries} filter={filter} />
+      <Display countries={countries} filter={filter} filterButton={setFilterTo} />
     </div>
   )
 }

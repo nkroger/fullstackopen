@@ -1,7 +1,10 @@
 import React from 'react'
 
-const Country = ({ name }) =>
-    <>{name}<br /></>
+const Country = ({ name, setFilterTo }) =>
+    <>{name}
+        <button onClick={() => setFilterTo(name)}>show</button>
+        <br />
+    </>
 
 const Languages = ({ languages }) => {
     return <div>
@@ -24,7 +27,7 @@ const CountryDisplay = ({ country }) =>
         <img src={country.flag} alt={'flag of ' + country.name} width='128' />
     </div>
 
-const Display = ({ countries, filter }) => {
+const Display = ({ countries, filter, filterButton }) => {
     const shownCountries = countries.filter( country =>
         country.name.includes(filter))
 
@@ -35,6 +38,7 @@ const Display = ({ countries, filter }) => {
             <Country
                 key={country.name}
                 name={country.name}
+                setFilterTo={filterButton}
             />)
     } else if (shownCountries.length === 1) {
         return <CountryDisplay country={shownCountries[0]} />
