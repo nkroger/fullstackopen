@@ -21,8 +21,7 @@ const App = () => {
   const [weather, setWeather] = useState([])
 
   const apiUrl = 'https://restcountries.eu/rest/v2/all?fields=name;capital;languages;flag;population'
-  const weatherApi = 'https://api.apixu.com/v1/current.json?'
-  const apixuToken = 'b154d10b24714e2b80f122716191008'
+  const weatherApi = 'http://api.weatherstack.com/current?'
 
   const handleFilterUpdate = (event) => {
     setFilter(event.target.value)
@@ -52,9 +51,9 @@ const App = () => {
   useEffect(() => {
     if (displayCountries.length === 1) {
       axios
-        .get(weatherApi + 'key=' + apixuToken + '&q=' + displayCountries[0].capital)
+        .get(weatherApi + 'access_key=' + process.env.REACT_APP_WEATHER_API_TOKEN
+            + '&query=' + displayCountries[0].capital)
         .then(response => {
-          console.log(response.data)
           setWeather(response.data)
         })
     }

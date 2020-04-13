@@ -1,4 +1,5 @@
 import React from 'react'
+import Weather from './Weather'
 
 const Languages = ({ languages }) => {
     return <div>
@@ -10,24 +11,6 @@ const Languages = ({ languages }) => {
                 </ul>
             </div>
 }
-
-const Weather = ({ report }) => {
-    if (report.location !== undefined) {
-        return <WeatherReport report={report} />
-    } else return <div></div>
-}
-
-const WeatherReport = ({ report }) =>
-    <div>
-        <h2>Weather in {report.location.name}</h2>
-        <p>
-            <b>temperature</b> {report.current.temp_c} celsius.
-            <br />
-            <img src={report.current.condition.icon} alt={report.current.condition.text} />
-            <br />
-            <b>wind:</b> {report.current.wind_kph} {report.current.wind_dir}
-        </p>
-    </div>
 
 const CountryDisplay = ({ country, weather }) =>
     <div>
