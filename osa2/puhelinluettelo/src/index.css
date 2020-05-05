@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 15;
   margin-block-start: 0;
   margin-block-end: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -12,4 +12,29 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h1 {
+  color: hotpink;
+}
+
+h3 {
+  color: rgb(172, 5, 238);
+}
+
+.notify {
+  background: lightgoldenrodyellow;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.notify-error {
+  color: red;
+}
+
+.notify-success {
+  color: green;
 }
