@@ -5,8 +5,6 @@ import PersonForm from './components/PersonForm'
 import PhonebookService from './services/phonebook'
 import Notifications from './components/Notification'
 
-// TODO: Refaktoroi Person omaan komponenttiin, klikinkäsittelijä propsina?
-
 const App = () => {
     const [ persons, setPersons ] = useState([])
     const [ newName, setNewName ] = useState('')
