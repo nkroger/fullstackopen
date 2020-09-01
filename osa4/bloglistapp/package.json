@@ -6,11 +6,14 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose",
+    "lint": "eslint ."
   },
   "author": "Niklas Kröger",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^7.7.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
