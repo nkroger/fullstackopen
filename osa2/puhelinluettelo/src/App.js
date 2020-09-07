@@ -47,13 +47,18 @@ const App = () => {
                         }, 2000)
                     })
                     .catch(error => {
-                        setErrorMessage(
-                            `'${person.name}' was not found on the server`
-                        )
+                        console.log(error.response.data)
+                        if (error.response.data.error) {
+                            setErrorMessage(error.response.data.error)
+                        } else {
+                            setErrorMessage(
+                                `'${person.name}' was not found on the server`
+                                )
+                            setPersons(persons.filter(p => p.id !== person.id))
+                        }
                         setTimeout(() => {
                             setErrorMessage(null)
                         }, 5000)
-                        setPersons(persons.filter(p => p.id !== person.id))
                     })
             }
         } else {
@@ -69,7 +74,11 @@ const App = () => {
                     }, 2000)
                 })
                 .catch(error => {
-                    setErrorMessage(error.message)
+                    if (error.response.data.error) {
+                        setErrorMessage(error.response.data.error)
+                    } else {
+                        setErrorMessage(error.message)
+                    }
                     setTimeout(() => {
                         setErrorMessage(null)
                     }, 5000)
