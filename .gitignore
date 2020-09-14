@@ -1,4 +1,4 @@
 node_modules
 osa1
 part1
-.env
+**.env
