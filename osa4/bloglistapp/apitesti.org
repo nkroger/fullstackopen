@@ -1,0 +1,61 @@
+* Testaillaan restclienttiä
+** List users
+#+NAME: list_users
+#+begin_src restclient
+GET http://localhost:3000/api/users
+#+end_src
+
+#+RESULTS: list_users
+#+BEGIN_SRC js
+[
+  {
+    "username": "P_Perusjanttu",
+    "name": "Pertti Perusjanttu",
+    "id": "62a32c99aec91c6b4542ee33"
+  }
+]
+// GET http://localhost:3000/api/users
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 90
+// ETag: W/"5a-DYWEDXgSg+6iFXcsk89B5i5Xha0"
+// Date: Fri, 10 Jun 2022 11:38:58 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.068580s
+#+END_SRC
+
+** Create user
+#+NAME: create_user
+#+begin_src restclient
+POST http://localhost:3000/api/users
+Content-Type: application/json
+{
+  "username": "kankka",
+  "name": "Kalle Ankka",
+  "password": "hunter2"
+}
+#+end_src
+
+#+RESULTS: testi
+#+BEGIN_SRC js
+{
+  "username": "P_Perusjanttu",
+  "name": "Pertti Perusjanttu",
+  "id": "62a32c99aec91c6b4542ee33"
+}
+// POST http://localhost:3000/api/users
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 88
+// ETag: W/"58-+OuSAEuyZvo70TxxenvjqXynEPk"
+// Date: Fri, 10 Jun 2022 11:35:53 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.210808s
+#+END_SRC
+

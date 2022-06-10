@@ -9,3 +9,7 @@ TODO
 PORT=3000
 MONGODB_URI=???
 MONGODB_TEST_URI=???
+
+Create MongoDB Docker container for dev:
+docker run -d --name mongodev -v devdata:/data/db -p 27016:27017 mongo
+
