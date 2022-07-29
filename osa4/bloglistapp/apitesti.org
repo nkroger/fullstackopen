@@ -1,17 +1,22 @@
-* Testaillaan restclienttiä
-** List users
+* API calls for users
 #+NAME: list_users
+** List users
 #+begin_src restclient
 GET http://localhost:3000/api/users
 #+end_src
 
-#+RESULTS: list_users
+#+RESULTS:
 #+BEGIN_SRC js
 [
   {
-    "username": "P_Perusjanttu",
-    "name": "Pertti Perusjanttu",
-    "id": "62a32c99aec91c6b4542ee33"
+    "username": "ka",
+    "name": "Karl Ankka",
+    "id": "62a85c866b71183324e61660"
+  },
+  {
+    "username": "",
+    "name": "Palle Ankka",
+    "id": "62aadd976b71183324e61665"
   }
 ]
 // GET http://localhost:3000/api/users
@@ -19,12 +24,12 @@ GET http://localhost:3000/api/users
 // X-Powered-By: Express
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 90
-// ETag: W/"5a-DYWEDXgSg+6iFXcsk89B5i5Xha0"
-// Date: Fri, 10 Jun 2022 11:38:58 GMT
+// Content-Length: 140
+// ETag: W/"8c-Je/E5vieHkML3q+6hIjOduvFHyo"
+// Date: Thu, 16 Jun 2022 07:37:07 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.068580s
+// Request duration: 0.062372s
 #+END_SRC
 
 ** Create user
@@ -33,11 +38,29 @@ GET http://localhost:3000/api/users
 POST http://localhost:3000/api/users
 Content-Type: application/json
 {
-  "username": "kankka",
-  "name": "Kalle Ankka",
-  "password": "hunter2"
+  "username": "p",
+  "name": "Palle Ankka",
+  "password": "h2"
 }
 #+end_src
+
+#+RESULTS: create_user
+#+BEGIN_SRC js
+{
+  "error": "Please choose a username of length 3 or longer"
+}
+// POST http://localhost:3000/api/users
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 58
+// ETag: W/"3a-cBeRWqqfrqc+XTrTlLCvnQLoLaE"
+// Date: Fri, 08 Jul 2022 16:07:23 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.022665s
+#+END_SRC
 
 #+RESULTS: testi
 #+BEGIN_SRC js
@@ -59,3 +82,32 @@ Content-Type: application/json
 // Request duration: 0.210808s
 #+END_SRC
 
+** Test user pw reqs
+#+NAME: create_user_short_pw
+#+begin_src restclient
+POST http://localhost:3000/api/users
+Content-Type: application/json
+{
+  "username": "",
+  "name": "Karl Ankka",
+  "password": "kakakkakakakaka"
+}
+#+end_src
+
+#+RESULTS: create_user_short_pw
+#+BEGIN_SRC js
+{
+  "error": "Please choose a username of length 3 or longer"
+}
+// POST http://localhost:3000/api/users
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 58
+// ETag: W/"3a-cBeRWqqfrqc+XTrTlLCvnQLoLaE"
+// Date: Thu, 16 Jun 2022 07:43:52 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.018587s
+#+END_SRC

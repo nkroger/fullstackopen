@@ -12,6 +12,20 @@ usersRouter.post('/', async (request, response) => {
     })
   }
 
+  // Check that password exists and is long enough
+  if (!password || (password.length < 3)) {
+    return response.status(400).json({
+      error: 'Please choose a password of length 3 or longer'
+    })
+  }
+
+  // Check that a username is given and it is long enough
+  if (!username || (username.length < 3)) {
+    return response.status(400).json({
+      error: 'Please choose a username of length 3 or longer'
+    })
+  }
+
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 

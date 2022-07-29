@@ -29,6 +29,14 @@ const initialUsers = [
   { username: 'pirkko', name: 'Niksi Pirkko', passwordHash 'aaaaaaaa' }
 ]
 
+const nonExistingUserId = async () => {
+  const user = new User({ username: 'eimuaoikeestioo', name: 'Mennyt Mies', passwordHash: 'olinjamenin' })
+  await user.save()
+  await user.remove()
+
+  return user._id.toString()
+}
+
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(user => user.toJSON())
