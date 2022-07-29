@@ -11,5 +11,8 @@ MONGODB_URI=???
 MONGODB_TEST_URI=???
 
 Create MongoDB Docker container for dev:
-docker run -d --name mongodev -v devdata:/data/db -p 27016:27017 mongo
+docker run -d --name mongodev -v $PWD/devdata:/data/db -p 27016:27017 mongo
+
+MongoDB Docker container for tests?
+docker run -d --name mongotest mongo
 
