@@ -87,7 +87,7 @@ describe('adding a new blog post', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
-      .expect(200)
+      .expect(201)
       .expect('Content-Type', /application\/json/)
   
     const expectedSize = helper.initialBlogs.length + 1
@@ -145,7 +145,7 @@ describe('adding a new blog post', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
-      .expect(200)
+      .expect(201)
       .expect( (res) => {
         expect(res.body.likes).toBe(0)
       })
