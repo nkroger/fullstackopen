@@ -80,15 +80,39 @@ describe('Adding a user', () => {
       username: existingUsername,
       password: 'notagreatpassword'
     }
+
+    const expectedError = 'username must be unique'
     
     await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
+      .expect( (res) => {
+        expect(res.body.error).toEqual(expectedError)
+      })
 
     const usersNow = await helper.usersInDb()
     expect(usersNow).toHaveLength(helper.initialUsers.length)
+  })
+
+  test('should fail if the username given is too short', async () => {
+    const newUser = {
+      username: 'nb',
+      name: 'His name is bob',
+      password: 'salakalasalasnaa'
+    }
+
+    const expectedError = 'Please choose a username of length 3 or longer'
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+      .expect( (res) => {
+        expect(res.body.error).toEqual(expectedError)
+      })
   })
 
   test('should fail if the password given is too short', async () => {
@@ -98,11 +122,16 @@ describe('Adding a user', () => {
       password: 'bb'
     }
 
+    const expectedError = 'Please choose a password of length 3 or longer'
+
     await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
+      .expect( (res) => {
+        expect(res.body.error).toEqual(expectedError)
+      })
 
     const usersNow = await helper.usersInDb()
     expect(usersNow).toHaveLength(helper.initialUsers.length)
