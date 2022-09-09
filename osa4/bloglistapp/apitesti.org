@@ -1,5 +1,6 @@
 * API calls for users
 #+NAME: list_users
+* Users
 ** List users
 #+begin_src restclient
 GET http://localhost:3000/api/users
@@ -38,28 +39,30 @@ GET http://localhost:3000/api/users
 POST http://localhost:3000/api/users
 Content-Type: application/json
 {
-  "username": "p",
-  "name": "Palle Ankka",
-  "password": "h2"
+  "username": "karl",
+  "name": "Karl Kustaa",
+  "password": "salaslasdfasdlfjalsalalala"
 }
 #+end_src
 
 #+RESULTS: create_user
 #+BEGIN_SRC js
 {
-  "error": "Please choose a username of length 3 or longer"
+  "username": "karl",
+  "name": "Karl Kustaa",
+  "id": "63187fb5bfe8263c403a40fd"
 }
 // POST http://localhost:3000/api/users
-// HTTP/1.1 400 Bad Request
+// HTTP/1.1 201 Created
 // X-Powered-By: Express
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 58
-// ETag: W/"3a-cBeRWqqfrqc+XTrTlLCvnQLoLaE"
-// Date: Fri, 08 Jul 2022 16:07:23 GMT
+// Content-Length: 72
+// ETag: W/"48-WVP79yX4d0zHBGN2nLovDUC/D/E"
+// Date: Wed, 07 Sep 2022 11:25:41 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.022665s
+// Request duration: 0.102286s
 #+END_SRC
 
 #+RESULTS: testi
@@ -111,3 +114,157 @@ Content-Type: application/json
 // Keep-Alive: timeout=5
 // Request duration: 0.018587s
 #+END_SRC
+
+* Blogs
+** List  blogs
+** Create blog
+#+NAME: create_blog
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "Kolmas kirjoitus",
+  "author": "Bertil Blogger",
+  "url": "www.blogi.fi/kolmas"
+}
+#+end_src
+
+#+RESULTS: create_blog
+#+BEGIN_SRC js
+{
+  "title": "Kolmas kirjoitus",
+  "author": "Bertil Blogger",
+  "url": "www.blogi.fi/kolmas",
+  "user": {
+    "username": "palle",
+    "name": "Palle Ankka",
+    "id": "63186bc2bfe8263c403a40f8"
+  },
+  "likes": 0,
+  "id": "631883036cb8564b20ef8753"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 205
+// ETag: W/"cd-g8LMraUzn0Z223JQw9L4+SqnNzk"
+// Date: Wed, 07 Sep 2022 11:39:47 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.097333s
+#+END_SRC
+
+#+NAME: create_blog2
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "Joku kirjoitus",
+  "author": "Bertil Blogger",
+  "url": "www.blogi.fi/kuutio"
+}
+#+end_src
+
+#+RESULTS: create_blog2
+#+BEGIN_SRC js
+{
+  "title": "Joku kirjoitus",
+  "author": "Bertil Blogger",
+  "url": "www.blogi.fi/kuutio",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631886ed462f934e3ded8d9e"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 156
+// ETag: W/"9c-r6hgSEQDoEILKCH7MT3sS+eDFy0"
+// Date: Wed, 07 Sep 2022 11:56:29 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.088510s
+#+END_SRC
+
+#+NAME: create_blog_reactpatterns
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "React Patterns",
+  "author": "Michael Chan",
+  "url": "https://www.reactpatterns.com"
+}
+#+end_src
+
+#+RESULTS: create_blog_reactpatterns
+#+BEGIN_SRC js
+{
+  "title": "React Patterns",
+  "author": "Michael Chan",
+  "url": "https://www.reactpatterns.com",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631ad62e216d6b6014c55e92"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 164
+// ETag: W/"a4-7JZ3JC1zm5tb3UFrkWlh1NMUYAo"
+// Date: Fri, 09 Sep 2022 05:59:10 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.073311s
+#+END_SRC
+
+#+NAME: create_blog_gotostatement
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "Go To Statement Considered Harmful",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html"
+}
+#+end_src
+
+#+RESULTS: create_blog_gotostatement
+#+BEGIN_SRC js
+{
+  "title": "Go To Statement Considered Harmful",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631ad6fb216d6b6014c55e99"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 246
+// ETag: W/"f6-KMkNr9INR9ZW0yBsBn64EwUBdWE"
+// Date: Fri, 09 Sep 2022 06:02:35 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.020599s
+#+END_SRC
+
+#+NAME: create_blog_canonicalstringreduction
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "Canonical string reduction",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html"
+}
+#+end_src

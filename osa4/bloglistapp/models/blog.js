@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const User = require('./user')
 
 mongoose.set('useFindAndModify', false)
 
@@ -21,6 +22,10 @@ const blogSchema = mongoose.Schema({
   likes: {
     type: Number,
     min: 0
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
