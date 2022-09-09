@@ -65,25 +65,39 @@ Content-Type: application/json
 // Request duration: 0.102286s
 #+END_SRC
 
-#+RESULTS: testi
+#+NAME: create_user2
+#+begin_src restclient
+POST http://localhost:3000/api/users
+Content-Type: application/json
+{
+  "username": "blogginfan",
+  "name": "Virpi Virveli",
+  "password": "tosihyväsalasana"
+}
+#+end_src
+
+#+RESULTS: create_user2
 #+BEGIN_SRC js
 {
-  "username": "P_Perusjanttu",
-  "name": "Pertti Perusjanttu",
-  "id": "62a32c99aec91c6b4542ee33"
+  "blogs": [],
+  "username": "blogginfan",
+  "name": "Virpi Virveli",
+  "id": "631b52603a9c557ef2235f8c"
 }
 // POST http://localhost:3000/api/users
 // HTTP/1.1 201 Created
 // X-Powered-By: Express
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 88
-// ETag: W/"58-+OuSAEuyZvo70TxxenvjqXynEPk"
-// Date: Fri, 10 Jun 2022 11:35:53 GMT
+// Content-Length: 91
+// ETag: W/"5b-z7WxcpOHwZnYZvn5oE9t+TQBKEU"
+// Date: Fri, 09 Sep 2022 14:49:04 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.210808s
+// Request duration: 0.170682s
 #+END_SRC
+
+#+RESULTS: testi
 
 ** Test user pw reqs
 #+NAME: create_user_short_pw
@@ -118,10 +132,70 @@ Content-Type: application/json
 * Blogs
 ** List  blogs
 ** Create blog
+   :PROPERTIES:
+   :header-args+: :var token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzMTg3ZmI1YmZlODI2M2M0MDNhNDBmZCIsImlhdCI6MTY2MjczNDMyOX0.NnT4VRmb9tkDlj5gSOIgQeVcG7D9fpwcH06Yxlcz8ZM"
+   :END:
+
+#+NAME: save-login
+#+begin_src elisp :var token='toksu'
+(defun chomp (str)
+  "Chomp leading and trailing whitespace from STR."
+  (while (string-match "\\'\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+                       str)
+    (setq str (replace-match "" t t str)))
+  str)
+
+(org-set-property "header-args+" (concat ":var token=" (json-encode (chomp token))))
+#+end_src
+
+#+NAME: login
+#+begin_src restclient :results value :cache yes
+POST http://localhost:3000/api/login
+Content-type: application/json
+{
+  "username": "blogginfan",
+  "password": "tosihyväsalasana"
+}
+#+end_src
+
+#+RESULTS: login
+#+BEGIN_SRC js
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzMTg3ZmI1YmZlODI2M2M0MDNhNDBmZCIsImlhdCI6MTY2MjcyNDgwMn0.PLg4i8omsdUjbjs60aQwHxCfOw5NUkowomqAAJQ8YuM",
+  "username": "karl",
+  "name": "Karl Kustaa"
+}
+// POST http://localhost:3000/api/login
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 223
+// ETag: W/"df-RDLLG/nmhhpAeaI+ahiV00maJpk"
+// Date: Fri, 09 Sep 2022 12:00:02 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.168731s
+#+END_SRC
+
+#+NAME: token
+#+begin_src shell :stdin login
+jq '.token'
+#+end_src
+
+Save token using save-login:
+#+call: save-login(token=token)
+
+#+RESULTS:
+
+#+RESULTS: token
+: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzMTg3ZmI1YmZlODI2M2M0MDNhNDBmZCIsImlhdCI6MTY2MjcyNjM2OH0.ATw9c0LL1OJr_MAesGYcIZVdJa5ejwQPohnnAJjEJ6Q
+
 #+NAME: create_blog
 #+begin_src restclient
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
+Authorization: Bearer :token
 {
   "title": "Kolmas kirjoitus",
   "author": "Bertil Blogger",
@@ -135,31 +209,28 @@ Content-Type: application/json
   "title": "Kolmas kirjoitus",
   "author": "Bertil Blogger",
   "url": "www.blogi.fi/kolmas",
-  "user": {
-    "username": "palle",
-    "name": "Palle Ankka",
-    "id": "63186bc2bfe8263c403a40f8"
-  },
+  "user": "63187fb5bfe8263c403a40fd",
   "likes": 0,
-  "id": "631883036cb8564b20ef8753"
+  "id": "631b51b93a9c557ef2235f80"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
 // X-Powered-By: Express
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 205
-// ETag: W/"cd-g8LMraUzn0Z223JQw9L4+SqnNzk"
-// Date: Wed, 07 Sep 2022 11:39:47 GMT
+// Content-Length: 158
+// ETag: W/"9e-oZ9WEGmz36Gcj4Ckm3DWWoYqgS4"
+// Date: Fri, 09 Sep 2022 14:46:17 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.097333s
+// Request duration: 0.040371s
 #+END_SRC
 
 #+NAME: create_blog2
 #+begin_src restclient
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
+Authorization: Bearer :token
 {
   "title": "Joku kirjoitus",
   "author": "Bertil Blogger",
@@ -173,9 +244,9 @@ Content-Type: application/json
   "title": "Joku kirjoitus",
   "author": "Bertil Blogger",
   "url": "www.blogi.fi/kuutio",
-  "user": "63186bc2bfe8263c403a40f8",
+  "user": "63187fb5bfe8263c403a40fd",
   "likes": 0,
-  "id": "631886ed462f934e3ded8d9e"
+  "id": "631b518b3a9c557ef2235f7a"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
@@ -183,17 +254,18 @@ Content-Type: application/json
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
 // Content-Length: 156
-// ETag: W/"9c-r6hgSEQDoEILKCH7MT3sS+eDFy0"
-// Date: Wed, 07 Sep 2022 11:56:29 GMT
+// ETag: W/"9c-iclZV3GYIoxEwIWOYzX/2TNfPl4"
+// Date: Fri, 09 Sep 2022 14:45:31 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.088510s
+// Request duration: 0.084611s
 #+END_SRC
 
 #+NAME: create_blog_reactpatterns
 #+begin_src restclient
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
+Authorization: Bearer :token
 {
   "title": "React Patterns",
   "author": "Michael Chan",
@@ -207,9 +279,9 @@ Content-Type: application/json
   "title": "React Patterns",
   "author": "Michael Chan",
   "url": "https://www.reactpatterns.com",
-  "user": "63186bc2bfe8263c403a40f8",
+  "user": "63187fb5bfe8263c403a40fd",
   "likes": 0,
-  "id": "631ad62e216d6b6014c55e92"
+  "id": "631b51d03a9c557ef2235f84"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
@@ -217,17 +289,18 @@ Content-Type: application/json
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
 // Content-Length: 164
-// ETag: W/"a4-7JZ3JC1zm5tb3UFrkWlh1NMUYAo"
-// Date: Fri, 09 Sep 2022 05:59:10 GMT
+// ETag: W/"a4-dXFOKdRmqKwHfQL3MZeA6axf2S4"
+// Date: Fri, 09 Sep 2022 14:46:40 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.073311s
+// Request duration: 0.058831s
 #+END_SRC
 
 #+NAME: create_blog_gotostatement
 #+begin_src restclient
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
+Authorization: Bearer :token
 {
   "title": "Go To Statement Considered Harmful",
   "author": "Edsger W. Dijkstra",
@@ -241,9 +314,9 @@ Content-Type: application/json
   "title": "Go To Statement Considered Harmful",
   "author": "Edsger W. Dijkstra",
   "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-  "user": "63186bc2bfe8263c403a40f8",
+  "user": "63187fb5bfe8263c403a40fd",
   "likes": 0,
-  "id": "631ad6fb216d6b6014c55e99"
+  "id": "631b51df3a9c557ef2235f88"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
@@ -251,11 +324,11 @@ Content-Type: application/json
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
 // Content-Length: 246
-// ETag: W/"f6-KMkNr9INR9ZW0yBsBn64EwUBdWE"
-// Date: Fri, 09 Sep 2022 06:02:35 GMT
+// ETag: W/"f6-9BPwcQGDM3kvL2MpMad7W51+LWs"
+// Date: Fri, 09 Sep 2022 14:46:55 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.020599s
+// Request duration: 0.042624s
 #+END_SRC
 
 #+NAME: create_blog_canonicalstringreduction
@@ -268,3 +341,160 @@ Content-Type: application/json
   "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html"
 }
 #+end_src
+
+#+RESULTS: create_blog_canonicalstringreduction
+#+BEGIN_SRC js
+{
+  "title": "Canonical string reduction",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631ad7c6216d6b6014c55e9d"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 217
+// ETag: W/"d9-abZJtO9JjAhONFgZeccQRezl8NI"
+// Date: Fri, 09 Sep 2022 06:05:58 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.041462s
+#+END_SRC
+
+#+NAME: create_blog_firstclasstests
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "First class tests",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll"
+}
+#+end_src
+
+#+RESULTS: create_blog_firstclasstests
+#+BEGIN_SRC js
+{
+  "title": "First class tests",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631ad986216d6b6014c55ea1"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 211
+// ETag: W/"d3-i0LZyYHXo+6QnxlsKqeLldPh0Ek"
+// Date: Fri, 09 Sep 2022 06:13:26 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.043396s
+#+END_SRC
+
+#+NAME: create_blog_tddharmarchitecture
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "TDD harm architecture",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html"
+}
+#+end_src
+
+#+RESULTS: create_blog_tddharmarchitecture
+#+BEGIN_SRC js
+{
+  "title": "TDD harm architecture",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631ad9dd216d6b6014c55ea5"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 221
+// ETag: W/"dd-XozLXUD+n8uW3smaoo1HWe88vzU"
+// Date: Fri, 09 Sep 2022 06:14:53 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.039167s
+#+END_SRC
+
+#+NAME: create_blog_typewars
+#+begin_src restclient
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+{
+  "title": "Type wars",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html"
+}
+#+end_src
+
+#+RESULTS: create_blog_typewars
+#+BEGIN_SRC js
+{
+  "title": "Type wars",
+  "author": "Robert C. Martin",
+  "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+  "user": "63186bc2bfe8263c403a40f8",
+  "likes": 0,
+  "id": "631ada24216d6b6014c55ea9"
+}
+// POST http://localhost:3000/api/blogs
+// HTTP/1.1 201 Created
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 195
+// ETag: W/"c3-UKvl3+N9NiYv8ydQZB2m4hvTMqY"
+// Date: Fri, 09 Sep 2022 06:16:04 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.030511s
+#+END_SRC
+
+* Login
+** Login test
+#+NAME: test_login
+#+begin_src restclient
+POST http://localhost:3000/api/login
+Content-type: application/json
+{
+  "username": "karl",
+  "password": "salaslasdfasdlfjalsalalala"
+}
+#+end_src
+
+#+RESULTS: test_login
+#+BEGIN_SRC js
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzMTg3ZmI1YmZlODI2M2M0MDNhNDBmZCIsImlhdCI6MTY2MjcwODg4OH0.3HVlvuyUbW_gKvmc28mg6ZlrWv2KUxKDTf6RvC5DGRI",
+  "username": "karl",
+  "name": "Karl Kustaa"
+}
+// POST http://localhost:3000/api/login
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 223
+// ETag: W/"df-uGSgCF6gtCG64YjM8r1FvwQjseA"
+// Date: Fri, 09 Sep 2022 07:34:48 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.086958s
+#+END_SRC
