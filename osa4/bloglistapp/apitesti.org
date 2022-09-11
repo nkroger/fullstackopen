@@ -97,6 +97,35 @@ Content-Type: application/json
 // Request duration: 0.170682s
 #+END_SRC
 
+#+NAME: create_user3
+#+begin_src restclient
+POST http://localhost:3000/api/users
+Content-Type: application/json
+{
+  "username": "yetanotheruser",
+  "name": "Katariina Suuri",
+  "password": "suurtakinsuurempisalaisuus"
+}
+#+end_src
+
+#+RESULTS: create_user3
+#+BEGIN_SRC js
+{
+  "error": "username must be unique"
+}
+// POST http://localhost:3000/api/users
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 35
+// ETag: W/"23-dMOcSs8vZ/uesN0cuPdC8EaSTAE"
+// Date: Sun, 11 Sep 2022 08:52:02 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.131463s
+#+END_SRC
+
 #+RESULTS: testi
 
 ** Test user pw reqs
@@ -153,8 +182,8 @@ Content-Type: application/json
 POST http://localhost:3000/api/login
 Content-type: application/json
 {
-  "username": "blogginfan",
-  "password": "tosihyväsalasana"
+  "username": "yetanotheruser",
+  "password": "suurtakinsuurempisalaisuus"
 }
 #+end_src
 
@@ -468,16 +497,40 @@ Authorization: Bearer :token
 
 #+RESULTS: delete_blog_withtoken
 #+BEGIN_SRC js
-// DELETE http://localhost:3000/api/blogs/631b58b7fded8aa8a5596798
+// DELETE http://localhost:3000/api/blogs/631b7418c8e43ac7770a3753
 // HTTP/1.1 204 No Content
 // X-Powered-By: Express
 // Access-Control-Allow-Origin: *
-// Date: Fri, 09 Sep 2022 16:45:33 GMT
+// Date: Fri, 09 Sep 2022 17:15:53 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.024372s
+// Request duration: 0.072783s
 #+END_SRC
 
+Delete without auth, should give sensible error (not internal server error!)
+#+NAME: delete_blog_noauth
+#+begin_src restclient
+DELETE http://localhost:3000/api/blogs/631b53e33a9c557ef2235f9a
+Content-Type: application/json
+#+end_src
+
+#+RESULTS: delete_blog_noauth
+#+BEGIN_SRC js
+{
+  "error": "authorization failed"
+}
+// DELETE http://localhost:3000/api/blogs/631b53e33a9c557ef2235f9a
+// HTTP/1.1 401 Unauthorized
+// X-Powered-By: Express
+// Access-Control-Allow-Origin: *
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 32
+// ETag: W/"20-5gimCzgctggSqndFzmdBvZfHpvY"
+// Date: Sat, 10 Sep 2022 07:34:37 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.180079s
+#+END_SRC
 
 * Login
 ** Login test
