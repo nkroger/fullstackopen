@@ -10,6 +10,7 @@ const api = supertest(app)
 describe('When there are some initial users saved', () => {
   beforeEach(async () => {
     await User.deleteMany({})
+    const users = await helper.initialUsers
     await User.insertMany(helper.initialUsers)
   })
 
@@ -42,11 +43,10 @@ describe('When there are some initial users saved', () => {
   })
 })
 
-// Testi olemassaolevan käyttäjänimen lisäämiselle, huonolle salasanalle, korrektille käyttäjälle yms
-// TODO test username length limit, sensible error messages as well as statuses
 describe('Adding a user', () => {
   beforeEach(async () => {
     await User.deleteMany({})
+    const users = await helper.initialUsers
     await User.insertMany(helper.initialUsers)
   })
 

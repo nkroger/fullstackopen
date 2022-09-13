@@ -26,7 +26,7 @@ usersRouter.post('/', async (request, response) => {
     })
   }
 
-  const passwordHash = crypto.hash(password)
+  const passwordHash = await crypto.hash(password)
 
   const user = new User({
     username,

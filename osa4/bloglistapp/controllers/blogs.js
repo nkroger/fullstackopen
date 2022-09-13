@@ -53,13 +53,13 @@ blogsRouter.delete('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   //const user = jwt.verify(request.token, process.env.SECRET).id
   const user = request.user
-  if (blog.user.toString() === user.toString()) {
-    blog.remove()
-    return response.status(204).end()
+  if (!(user && blog.user.toString() === user.toString())) {
+    return response.status(401).json({ error: 'authorization failed' })
   }
+  blog.remove()
+  response.status(204).end()
   //await Blog.findByIdAndRemove(request.params.id)
   //response.status(204).end()
-  response.status(401).json({ error: 'authorization failed' })
 })
 
 module.exports = blogsRouter

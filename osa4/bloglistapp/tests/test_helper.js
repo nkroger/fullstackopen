@@ -1,5 +1,7 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const _ = require('lodash')
+const crypto = require('../utils/crypto')
 
 const initialBlogs = [
   { _id: '5a422a851b54a676234d17f7', title: 'React patterns', author: 'Michael Chan', url: 'https://reactpatterns.com/', likes: 7, __v: 0 },
@@ -23,10 +25,16 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const userAccounts = [
+  { username: 'kalleankka', name: 'Kalle Ankka', password: '12345678' },
+  { username: 'peelo', name: 'Pekka Elo', password: 'hunter2' },
+  { username: 'pirkko', name: 'Niksi Pirkko', password: 'aaaaaaaa' }
+]
+
 const initialUsers = [
-  { username: 'kalleankka', name: 'Kalle Ankka', passwordHash: '12345678' },
-  { username: 'peelo', name: 'Pekka Elo', passwordHash: 'hunter2' },
-  { username: 'pirkko', name: 'Niksi Pirkko', passwordHash: 'aaaaaaaa' }
+  { username: 'kalleankka', name: 'Kalle Ankka', passwordHash: '$2b$10$FDq7FRQYzxQcozZkZKcRZ.yfWRSgPLMuUgOqng6tFwz2Ul6ceMNN.' },
+  { username: 'peelo', name: 'Pekka Elo', passwordHash: '$2b$10$Zjckfdxt3i3j3Mk8jgNQc./tKYM9BdPgH02DqCbj5ezrwKgCko8uy' },
+  { username: 'pirkko', name: 'Niksi Pirkko', passwordHash: '$2b$10$7FX1GZ6DRQC/6aZ0Kd3SpevpvAIhqIx3AUJKBNP9ByHK07PJtDTp.' }
 ]
 
 const nonExistingUserId = async () => {
@@ -43,5 +51,5 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb, initialUsers, usersInDb, nonExistingUserId
+  initialBlogs, nonExistingId, blogsInDb, initialUsers, usersInDb, nonExistingUserId, userAccounts
 }
