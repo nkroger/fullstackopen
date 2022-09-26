@@ -32,7 +32,7 @@ const updateLikes = async updatedBlog => {
   return response.data
 }
 
-const delete = (blogToDelete) => {
+const deleteBlog = async (blogToDelete) => {
   const config = {
     headers: { Authorization: token }
   }
@@ -42,4 +42,4 @@ const delete = (blogToDelete) => {
   return response.data
 }
 
-export default { getAll, setToken, create, updateLikes }
+export default { getAll, setToken, create, updateLikes, deleteBlog }

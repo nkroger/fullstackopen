@@ -89,7 +89,6 @@ const App = () => {
   }*/
 
   const createBlog = async ( newBlog ) => {
-    // TODO virheenhallinta ja ilmot?
     try {
       const res = await blogService.create(newBlog)
       setBlogs(blogs.concat(res))
@@ -105,6 +104,17 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 3000)
+    }
+  }
+
+  const deleteBlog = async ( blogToDelete ) => {
+    try {
+      const res = await blogService.deleteBlog(blogToDelete)
+    } catch (exception) {
+     setErrorMessage('Deleting blog failed')
+     setTimeout(() => {
+       setErrorMessage(null)
+     }, 3000)
     }
   }
 
@@ -162,7 +172,8 @@ const App = () => {
            </Togglable>
           {
             sortedBlogs().map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} user={user}
+                deleteHandler={deleteBlog}/>
             )}
         </div> 
       }
