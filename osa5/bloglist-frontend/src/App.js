@@ -108,13 +108,21 @@ const App = () => {
   }
 
   const deleteBlog = async ( blogToDelete ) => {
-    try {
-      const res = await blogService.deleteBlog(blogToDelete)
-    } catch (exception) {
-     setErrorMessage('Deleting blog failed')
-     setTimeout(() => {
-       setErrorMessage(null)
-     }, 3000)
+    if (window.confirm(`Delete blog ${blogToDelete.title} by ${blogToDelete.author}?`)) {
+      try {
+        const res = await blogService.deleteBlog(blogToDelete)
+        const blogs = await blogService.getAll()
+        setBlogs(blogs)
+        setSuccessMessage('Blog deleted')
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 3000)
+      } catch (exception) {
+        setErrorMessage('Deletion failed\n' + exception)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+      }
     }
   }
 
@@ -173,7 +181,7 @@ const App = () => {
           {
             sortedBlogs().map(blog =>
               <Blog key={blog.id} blog={blog} user={user}
-                deleteHandler={deleteBlog}/>
+                deleteHandler={() => deleteBlog(blog)}/>
             )}
         </div> 
       }

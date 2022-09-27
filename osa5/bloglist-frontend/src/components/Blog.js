@@ -40,7 +40,7 @@ const Blog = ({blog, user, deleteHandler}) => {
         {blog.user.name}
         { user.username === blog.user.username &&
           <>
-            <br /><button onClick={deleteHandleraa(blog)}>Delete</button>
+            <br /><button onClick={deleteHandler}>Delete</button>
           </>
         }
       </div>
