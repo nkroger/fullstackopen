@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 
 const Blog = ({blog, user, deleteHandler}) => {
   const [ visible, setVisible ] = useState(false)
-  const [ currentLikes, setLikes ]     = useState(blog.likes)
+  const [ currentLikes, setLikes ] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
