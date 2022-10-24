@@ -88,9 +88,11 @@ const App = () => {
     }
   }*/
 
+  // TODO: New blog cannot be deleted before refresh!
   const createBlog = async ( newBlog ) => {
     try {
       const res = await blogService.create(newBlog)
+      console.log(res)
       setBlogs(blogs.concat(res))
       setSuccessMessage(
         `A new blog '${res.title}' by ${res.author} added!`
@@ -111,8 +113,7 @@ const App = () => {
     if (window.confirm(`Delete blog ${blogToDelete.title} by ${blogToDelete.author}?`)) {
       try {
         const res = await blogService.deleteBlog(blogToDelete)
-        const blogs = await blogService.getAll()
-        setBlogs(blogs)
+        setBlogs(blogs.filter( b => b.id !== blogToDelete.id ))
         setSuccessMessage('Blog deleted')
         setTimeout(() => {
           setSuccessMessage(null)
