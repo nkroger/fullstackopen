@@ -14,14 +14,11 @@ const App = () => {
   const [username, setUsername]             = useState('')
   const [password, setPassword]             = useState('')
   const [user, setUser]                     = useState(null)
-  const [title, setTitle]                   = useState('')
-  const [author, setAuthor]                 = useState('')
-  const [url, setUrl]                       = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -32,7 +29,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-  
+
   const blogFormRef = useRef()
 
   const handleLogin = async (event) => {
@@ -62,31 +59,6 @@ const App = () => {
       }, 3000)
     }
   }
-
-  /*const handleAddBlog = async (event) => {
-    event.preventDefault()
-    
-    try {
-      const result = await blogService.create(
-        { title, author, url }
-      )
-      setBlogs(blogs.concat(result))
-      setSuccessMessage(
-        `A new blog '${result.title}' by ${result.author} added!`
-      )
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 3000)
-    } catch (exception) {
-      setErrorMessage('Adding blog failed')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
-    }
-  }*/
 
   // NOTE: not sure that's the neatest way to add the new blog
   const createBlog = async ( newBlog ) => {
@@ -136,12 +108,12 @@ const App = () => {
       setSuccessMessage(null)
     }, 3000)
   }
-  
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -150,7 +122,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="text"
           value={password}
           name="Password"
@@ -178,16 +150,16 @@ const App = () => {
             logoutHandler={() => logout()} />
           <br />
           <Togglable  buttonLabel="add blog" ref={blogFormRef} >
-             <BlogForm createNewBlog={createBlog} />
-           </Togglable>
+            <BlogForm createNewBlog={createBlog} />
+          </Togglable>
           {
             sortedBlogs().map(blog =>
               <Blog key={blog.id} blog={blog} user={user}
                 deleteHandler={() => deleteBlog(blog)}/>
             )}
-        </div> 
+        </div>
       }
-      
+
     </div>
   )
 }

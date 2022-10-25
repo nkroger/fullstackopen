@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, user, deleteHandler}) => {
+const Blog = ({ blog, user, deleteHandler }) => {
   const [ visible, setVisible ] = useState(false)
   const [ currentLikes, setLikes ] = useState(blog.likes)
 
@@ -44,7 +44,7 @@ const Blog = ({blog, user, deleteHandler}) => {
           </>
         }
       </div>
-    </div>  
+    </div>
   )
 }
 
