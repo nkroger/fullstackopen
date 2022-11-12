@@ -100,6 +100,21 @@ const App = () => {
     }
   }
 
+  // likes can overflow?
+  const addLikeFor = async ( id ) => {
+    const blog = blogs.find(b => b.id === id)
+    const newBlog = { ...blog, likes: blog.likes + 1 }
+    try {
+      const returnedBlog = await blogService.updateLikes(newBlog)
+      setBlogs(blogs.map( b => b.id !== id ? b : returnedBlog ))
+    } catch (exception) {
+      setErrorMessage('Updating likes failed\n' + exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+    }
+  }
+
   const logout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedInBlogUser')
@@ -154,8 +169,10 @@ const App = () => {
           </Togglable>
           {
             sortedBlogs().map(blog =>
-              <Blog key={blog.id} blog={blog} user={user}
-                deleteHandler={() => deleteBlog(blog)}/>
+              <Blog key={blog.id}
+                blog={blog} user={user}
+                deleteHandler={() => deleteBlog(blog)}
+                likeHandler={() => addLikeFor(blog.id)}/>
             )}
         </div>
       }
