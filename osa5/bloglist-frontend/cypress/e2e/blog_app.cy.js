@@ -72,12 +72,30 @@ describe('Blog app', function() {
         cy.addBlog({ title: 'Third blog', author: 'Charles Dickens', url: 'www.penguin.co.uk/blog' })
       })
 
-      it.only('liking a blog increases its likes by one', function() {
+      it('liking a blog increases its likes by one', function() {
         cy.contains('Second blog').as('Blog2').contains('view').click()
         cy.get('@Blog2').contains('likes 0')
 
         cy.get('@Blog2').find('button').contains('like').as('likeButton').click()
         cy.get('@Blog2').contains('likes 1')
+      })
+
+      it('the user who added a blog can delete it', function() {
+        cy.contains('Third blog').contains('view').click()
+        cy.contains('Third blog').find('button').contains('Delete').click()
+        cy.get('#bloglist').should('not.contain', 'Third blog')
+      })
+
+      it('a user should not be able to delete a blog not added by them', function() {
+        const user = {
+          name: 'Paavo Karhu',
+          username: 'paavoblogs',
+          password: 'hunter2'
+        }
+        cy.request('POST', 'http://localhost:3003/api/users/', user)
+        cy.login({ username: 'paavoblogs', password: 'hunter2'})
+        cy.contains('Third blog').contains('view').click()
+        cy.contains('Third blog').find('button').should('not.contain', 'Delete')
       })
     })
   })
