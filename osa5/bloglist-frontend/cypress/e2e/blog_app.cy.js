@@ -52,15 +52,10 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function () {
-      cy.request('POST', 'http://localhost:3003/api/login', {
-        username: 'ttester', password: 'supersecretword'
-      }).then(response => {
-        localStorage.setItem('loggedInBlogUser', JSON.stringify(response.body))
-        cy.visit('http://localhost:3000')
-      })
+      cy.login({ username: 'ttester', password: 'supersecretword' })
     })
 
-    it.only('A new blog can be added', function() {
+    it('A new blog can be added', function() {
       cy.contains('add blog').click()
       cy.get('#blog-title').type('Test title for a new blog post')
       cy.get('#blog-author').type('T. McAuthor')
@@ -69,5 +64,22 @@ describe('Blog app', function() {
 
       cy.get('#bloglist').contains('Test title for a new blog post')
     })
+
+    describe('and some blogs exist', function() {
+      beforeEach(function () {
+        cy.addBlog({ title: 'First test blog', author: 'Palle Palle', url: 'www.url.fi/1' })
+        cy.addBlog({ title: 'Second blog of interest', author: 'Kuula', url: 'www.blogi.net/interest' })
+        cy.addBlog({ title: 'Third blog', author: 'Charles Dickens', url: 'www.penguin.co.uk/blog' })
+      })
+
+      it.only('liking a blog increases its likes by one', function() {
+        cy.contains('Second blog').as('Blog2').contains('view').click()
+        cy.get('@Blog2').contains('likes 0')
+
+        cy.get('@Blog2').find('button').contains('like').as('likeButton').click()
+        cy.get('@Blog2').contains('likes 1')
+      })
+    })
   })
+
 })
