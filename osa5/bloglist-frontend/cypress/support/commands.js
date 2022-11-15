@@ -44,3 +44,9 @@ Cypress.Commands.add('addBlog', ({ title, author, url }) => {
 
   cy.visit('http://localhost:3000')
 })
+
+Cypress.Commands.add('giveLike', (title) => {
+  cy.contains(title).as('blog').contains('view').click()
+  cy.get('@blog').find('button').contains('like').click()
+  cy.get('@blog').contains('hide').click()
+})

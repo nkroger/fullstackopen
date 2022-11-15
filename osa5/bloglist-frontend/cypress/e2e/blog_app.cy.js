@@ -66,10 +66,16 @@ describe('Blog app', function() {
     })
 
     describe('and some blogs exist', function() {
+      const initialBlogs = [
+        { title: 'First test blog', author: 'Palle Palle', url: 'www.url.fi/1' },
+        { title: 'Second blog of interest', author: 'Kuula', url: 'www.blogi.net/interest' },
+        { title: 'Third blog', author: 'Charles Dickens', url: 'www.penguin.co.uk/blog' }
+      ]
+
       beforeEach(function () {
-        cy.addBlog({ title: 'First test blog', author: 'Palle Palle', url: 'www.url.fi/1' })
-        cy.addBlog({ title: 'Second blog of interest', author: 'Kuula', url: 'www.blogi.net/interest' })
-        cy.addBlog({ title: 'Third blog', author: 'Charles Dickens', url: 'www.penguin.co.uk/blog' })
+        initialBlogs.forEach( blog => {
+          cy.addBlog(blog)
+        } )
       })
 
       it('liking a blog increases its likes by one', function() {
@@ -96,6 +102,43 @@ describe('Blog app', function() {
         cy.login({ username: 'paavoblogs', password: 'hunter2'})
         cy.contains('Third blog').contains('view').click()
         cy.contains('Third blog').find('button').should('not.contain', 'Delete')
+      })
+
+      it('blogs should be sorted by likes', function() {
+        let checkCount = 0
+        let checkLimit = 10
+        // Sort blogs into random order and give first two random decreasing likes
+        const randomisedBlogs = initialBlogs.sort( _ => Math.random() - 0.5 )
+                                            .map( (blog, i) => ({ blog: blog, likes: (2-i)*3 + 3 * Math.floor(Math.random()) }) )
+        // give blogs likes based on randomisedBlogs
+        const giveAndCheckLikes = ({blog, likes}) => {
+          cy.contains(blog.title)
+            .invoke('text')
+            // parse number found after "likes " as an Int
+            .then( text => parseInt(text.match(/likes (\d+)/)[1]))
+            .then( (number) => {
+              if (number === likes) {
+                cy.log(`Blog ${blog.title} has ${likes} likes!`)
+              } else {
+                cy.wait(500, { log: false })
+                cy.giveLike(blog.title)
+                checkCount += 1
+                if (checkCount >= checkLimit) {
+                  throw new Error('Check limit exceeded!')
+                }
+                giveAndCheckLikes({blog, likes})
+              }
+            })
+        }
+        randomisedBlogs.forEach( ({blog, likes}) => {
+          giveAndCheckLikes({blog, likes})
+        } )
+
+        cy.get('#bloglist').children().then( blogs => {
+          for (let i = 0; i < randomisedBlogs.length; i++) {
+            expect(blogs[i]).to.contain(randomisedBlogs[i].blog.title)
+          }
+        } )
       })
     })
   })
