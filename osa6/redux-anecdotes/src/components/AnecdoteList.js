@@ -23,8 +23,9 @@ const AnecdoteList = () => {
     dispatch(upvoteAnecdote(id))
     displayNotification(dispatch, `You upvoted "${anecdote.content}"`)
   }
+  const filter = useSelector( state => state.filter )
   const anecdotes = useSelector( state => {
-    return [...state.anecdotes].sort( (a, b) => b.votes - a.votes )
+    return [...state.anecdotes].sort( (a, b) => b.votes - a.votes ).filter( a => a.content.includes(filter) )
   })
 
   return(

@@ -13,10 +13,14 @@ const AnecdoteForm = (props) => {
     displayNotification(dispatch, `You added anecdote "${content}"`)
   }
 
+  const style = {
+    marginBottom: 5
+  }
+
     return (
         <form onSubmit={addAnecdote}>
-          <div><input name="anecdote"/></div>
-          <button type="submit">create</button>
+          <div style={style}><input name="anecdote"/></div>
+          <button style={style} type="submit">create</button>
         </form>
     )
 }

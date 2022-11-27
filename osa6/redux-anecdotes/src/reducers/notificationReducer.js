@@ -16,7 +16,6 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     setMessage(state, action) {
-      console.log(action.payload)
       return {id: action.payload.id, visible: true, message: action.payload.message}
     },
     setHidden(state, action) {
