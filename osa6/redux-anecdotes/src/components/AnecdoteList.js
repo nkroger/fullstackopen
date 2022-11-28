@@ -6,7 +6,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
   return(
     <li>
       <div>
-      {anecdote.content}
+        {anecdote.content}
       </div>
       <div>
         has {anecdote.votes} votes
@@ -19,8 +19,8 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const handleUpvote = (id, anecdote) => {
-    dispatch(upvoteAnecdote(id))
+  const handleUpvote = (anecdote) => {
+    dispatch(upvoteAnecdote(anecdote))
     displayNotification(dispatch, `You upvoted "${anecdote.content}"`)
   }
   const filter = useSelector( state => state.filter )
@@ -30,13 +30,13 @@ const AnecdoteList = () => {
 
   return(
     <ul>
-    {anecdotes.map(anecdote =>
-      <Anecdote
-        key={anecdote.id}
-        anecdote={anecdote}
-        handleClick={() => handleUpvote(anecdote.id, anecdote)}
-      />
-    )}
+      {anecdotes.map(anecdote =>
+        <Anecdote
+          key={anecdote.id}
+          anecdote={anecdote}
+          handleClick={() => handleUpvote(anecdote)}
+        />
+      )}
     </ul>
   )
 }
