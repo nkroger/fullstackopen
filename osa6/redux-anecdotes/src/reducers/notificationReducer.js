@@ -27,13 +27,15 @@ const notificationSlice = createSlice({
   }
 })
 
-export const displayNotification = (dispatch, message) => {
-  const id = nextId
-  nextId += 1
-  dispatch(setMessage({ id, message }))
-  setTimeout( () => {
-    dispatch(setHidden(id))
-  }, notifyDuration)
+export const setNotification = (message, duration = 5) => {
+  return async dispatch => {
+    const id = nextId
+    nextId += 1;
+    dispatch(setMessage({ id, message }))
+    setTimeout( () => {
+      dispatch(setHidden(id))
+    }, duration * 1000 )
+  }
 }
 
 export const { setMessage, setHidden } = notificationSlice.actions
