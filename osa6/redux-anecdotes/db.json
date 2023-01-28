@@ -42,13 +42,18 @@
     },
     {
       "content": "Toimiiko nyt",
-      "votes": 0,
+      "votes": 1,
       "id": "fUSMaFG"
     },
     {
       "content": "Uusi anekdootti",
       "votes": 0,
       "id": "GAAQ9ZP"
+    },
+    {
+      "content": "Toimiiko todella edelleen?",
+      "votes": 1,
+      "id": "lj2Dapl"
     }
   ]
 }
