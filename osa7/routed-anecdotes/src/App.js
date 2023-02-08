@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom/client'
 import { useState } from 'react'
 
 import {
@@ -5,6 +6,7 @@ import {
   Routes,
   Route,
   Link,
+  useMatch,
 } from 'react-router-dom'
 
 /*const Menu = () => {
@@ -24,10 +26,22 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} >
+        <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
   </div>
 )
+
+const Anecdote = ({ anecdote }) => {
+ 
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <p>has {anecdote.votes} votes</p>
+      <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
+    </div>
+  )
+}
 
 const About = () => (
   <div>
@@ -133,10 +147,15 @@ const App = () => {
     paddingRight: 5
   }
 
+  const match = useMatch('/anecdotes/:id')
+  const anecdote = match
+    ? anecdotes.find(n => n.id === Number(match.params.id))
+    : null
+
+
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Router>
         <div>
           <Link style={padding} to='/'>anecdotes</Link>
           <Link style={padding} to='/create'>create new</Link>
@@ -144,12 +163,12 @@ const App = () => {
        </div>
 
        <Routes>
+          <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
           <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path='/create' element={<CreateNew addNew={addNew} />} />
           <Route path='/about' element={<About /> } />
        </Routes>
       <Footer />
-      </Router>
     </div>
   )
 }
