@@ -1,12 +1,11 @@
-import ReactDOM from 'react-dom/client'
 import { useState } from 'react'
 
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Link,
   useMatch,
+  useNavigate,
 } from 'react-router-dom'
 
 /*const Menu = () => {
@@ -70,7 +69,6 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
-
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
@@ -123,10 +121,16 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+  const navigate = useNavigate()
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote '${anecdote.content}' created!`)
+    setTimeout(() => {
+      setNotification('')
+    }, 5000)
+    navigate('/')
   }
 
   const anecdoteById = (id) =>
@@ -161,6 +165,7 @@ const App = () => {
           <Link style={padding} to='/create'>create new</Link>
           <Link style={padding} to='/about'>about</Link>
        </div>
+       <div>{notification}</div>
 
        <Routes>
           <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
