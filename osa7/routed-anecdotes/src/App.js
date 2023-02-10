@@ -10,18 +10,6 @@ import {
 
 import { useField } from './hooks'
 
-/*const Menu = () => {
-  const padding = {
-    paddingRight: 5
-  }
-  return (
-    <div>
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a>
-    </div>
-  )
-}*/
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -84,6 +72,12 @@ const CreateNew = (props) => {
     })
   }
 
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -101,6 +95,7 @@ const CreateNew = (props) => {
           <input { ...info } />
         </div>
         <button>create</button>
+        <button onClick={() => handleReset()}>reset</button>
       </form>
     </div>
   )
