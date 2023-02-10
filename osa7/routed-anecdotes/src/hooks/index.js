@@ -8,7 +8,6 @@ export const useField = (type, name) => {
   }
   
   return {
-    name,
     type,
     value,
     onChange
