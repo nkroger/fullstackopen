@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const LoggedUser = ({ name, logoutHandler }) =>
-  <>{name} logged in
+const LoggedUser = ({ name, logoutHandler }) => (
+  <>
+    {name} logged in
     <button onClick={logoutHandler}>logout</button>
     <br />
   </>
+);
 
-export default LoggedUser
-
+export default LoggedUser;

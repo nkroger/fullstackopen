@@ -3,7 +3,7 @@
 * Users
 ** List users
 #+begin_src restclient
-GET http://localhost:3000/api/users
+GET http://localhost:3003/api/users
 #+end_src
 
 #+RESULTS:
