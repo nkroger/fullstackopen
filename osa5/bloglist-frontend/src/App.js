@@ -1,125 +1,128 @@
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import BlogForm from "./components/BlogForm";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
-import LoggedUser from "./components/LoggedUser";
-import Notifications from "./components/Notification";
-import Togglable from "./components/Togglable";
+import { useState, useEffect, useRef } from "react"
+//import Blog from "./components/Blog"
+import BlogForm from "./components/BlogForm"
+import BlogList from "./components/BlogList"
+import blogService from "./services/blogs"
+import loginService from "./services/login"
+import LoggedUser from "./components/LoggedUser"
+import Notifications from "./components/Notification"
+import Togglable from "./components/Togglable"
+import { initializeBlogs } from "./reducers/blogReducer"
+import { useDispatch } from "react-redux"
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [user, setUser] = useState(null)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedInBlogUser");
+    const loggedUserJSON = window.localStorage.getItem("loggedInBlogUser")
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
+  }, [])
 
-  const blogFormRef = useRef();
+  const blogFormRef = useRef()
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
       const user = await loginService.login({
         username,
         password,
-      });
-      window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-      setSuccessMessage(`Logged in as ${user.username}`);
+      })
+      window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername("")
+      setPassword("")
+      setSuccessMessage(`Logged in as ${user.username}`)
       setTimeout(() => {
-        setSuccessMessage(null);
-      }, 3000);
+        setSuccessMessage(null)
+      }, 3000)
     } catch (exception) {
-      setErrorMessage("wrong credentials");
+      setErrorMessage("wrong credentials")
       setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
+        setErrorMessage(null)
+      }, 3000)
     }
-  };
+  }
 
   // NOTE: not sure that's the neatest way to add the new blog
-  const createBlog = async (newBlog) => {
-    try {
-      const res = await blogService.create(newBlog);
-      const id = res.user;
-      res.user = { username: user.username, name: user.name, id: id };
-      setBlogs(blogs.concat(res));
-      setSuccessMessage(`A new blog '${res.title}' by ${res.author} added!`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 3000);
-      blogFormRef.current.toggleVisibility();
-    } catch (exception) {
-      setErrorMessage("Adding blog failed");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
-    }
-  };
+  // const createBlog = async (newBlog) => {
+  //   try {
+  //     const res = await blogService.create(newBlog)
+  //     const id = res.user
+  //     res.user = { username: user.username, name: user.name, id: id }
+  //     setBlogs(blogs.concat(res))
+  //     setSuccessMessage(`A new blog '${res.title}' by ${res.author} added!`)
+  //     setTimeout(() => {
+  //       setSuccessMessage(null)
+  //     }, 3000)
+  //     blogFormRef.current.toggleVisibility()
+  //   } catch (exception) {
+  //     setErrorMessage("Adding blog failed")
+  //     setTimeout(() => {
+  //       setErrorMessage(null)
+  //     }, 3000)
+  //   }
+  // }
 
-  const deleteBlog = async (blogToDelete) => {
-    if (
-      window.confirm(
-        `Delete blog ${blogToDelete.title} by ${blogToDelete.author}?`
-      )
-    ) {
-      try {
-        await blogService.deleteBlog(blogToDelete);
-        setBlogs(blogs.filter((b) => b.id !== blogToDelete.id));
-        setSuccessMessage("Blog deleted");
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 3000);
-      } catch (exception) {
-        setErrorMessage("Deletion failed\n" + exception);
-        setTimeout(() => {
-          setErrorMessage(null);
-        }, 3000);
-      }
-    }
-  };
+  // const deleteBlog = async (blogToDelete) => {
+  //   if (
+  //     window.confirm(
+  //       `Delete blog ${blogToDelete.title} by ${blogToDelete.author}?`
+  //     )
+  //   ) {
+  //     try {
+  //       await blogService.deleteBlog(blogToDelete)
+  //       setBlogs(blogs.filter((b) => b.id !== blogToDelete.id))
+  //       setSuccessMessage("Blog deleted")
+  //       setTimeout(() => {
+  //         setSuccessMessage(null)
+  //       }, 3000)
+  //     } catch (exception) {
+  //       setErrorMessage("Deletion failed\n" + exception)
+  //       setTimeout(() => {
+  //         setErrorMessage(null)
+  //       }, 3000)
+  //     }
+  //   }
+  // }
 
   // likes can overflow?
-  const addLikeFor = async (id) => {
-    const blog = blogs.find((b) => b.id === id);
-    const newBlog = { ...blog, likes: blog.likes + 1 };
-    try {
-      const returnedBlog = await blogService.updateLikes(newBlog);
-      setBlogs(blogs.map((b) => (b.id !== id ? b : returnedBlog)));
-    } catch (exception) {
-      setErrorMessage("Updating likes failed\n" + exception);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 3000);
-    }
-  };
+  // const addLikeFor = async (id) => {
+  //   const blog = blogs.find((b) => b.id === id)
+  //   const newBlog = { ...blog, likes: blog.likes + 1 }
+  //   try {
+  //     const returnedBlog = await blogService.updateLikes(newBlog)
+  //     setBlogs(blogs.map((b) => (b.id !== id ? b : returnedBlog)))
+  //   } catch (exception) {
+  //     setErrorMessage("Updating likes failed\n" + exception)
+  //     setTimeout(() => {
+  //       setErrorMessage(null)
+  //     }, 3000)
+  //   }
+  // }
 
   const logout = () => {
-    setUser(null);
-    window.localStorage.removeItem("loggedInBlogUser");
-    setSuccessMessage("Logged out");
+    setUser(null)
+    window.localStorage.removeItem("loggedInBlogUser")
+    setSuccessMessage("Logged out")
     setTimeout(() => {
-      setSuccessMessage(null);
-    }, 3000);
-  };
+      setSuccessMessage(null)
+    }, 3000)
+  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -147,11 +150,7 @@ const App = () => {
         login
       </button>
     </form>
-  );
-
-  const sortedBlogs = () => {
-    return blogs.sort((a, b) => b.likes - a.likes);
-  };
+  )
 
   return (
     <div>
@@ -165,23 +164,13 @@ const App = () => {
           <LoggedUser name={user.name} logoutHandler={() => logout()} />
           <br />
           <Togglable buttonLabel="add blog" ref={blogFormRef}>
-            <BlogForm createNewBlog={createBlog} />
+            <BlogForm />
           </Togglable>
-          <div id="bloglist">
-            {sortedBlogs().map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user}
-                deleteHandler={() => deleteBlog(blog)}
-                likeHandler={() => addLikeFor(blog.id)}
-              />
-            ))}
-          </div>
+          <BlogList />
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

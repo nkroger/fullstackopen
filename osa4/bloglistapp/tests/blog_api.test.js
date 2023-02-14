@@ -221,6 +221,7 @@ describe("deletion of a blog post", () => {
       .expect(204);
     //.expect('Content-Type', /application\/json/)
 
+    await new Promise(r => setTimeout(r, 2000))
     const blogsAtEnd = await helper.blogsInDb();
 
     expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);

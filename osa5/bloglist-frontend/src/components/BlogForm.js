@@ -1,28 +1,32 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { addBlog } from "../reducers/blogReducer"
 
-const BlogForm = ({ createNewBlog }) => {
-  const [title, setNewTitle] = useState("");
-  const [author, setNewAuthor] = useState("");
-  const [url, setNewUrl] = useState("");
+const BlogForm = () => {
+  const [title, setNewTitle] = useState("")
+  const [author, setNewAuthor] = useState("")
+  const [url, setNewUrl] = useState("")
+  const dispatch = useDispatch()
 
-  const addBlog = (event) => {
-    event.preventDefault();
-    createNewBlog({
+  const handleAdd = (event) => {
+    event.preventDefault()
+    const newBlog = {
       title: title,
       author: author,
       url: url,
-    });
+    }
 
-    setNewTitle("");
-    setNewAuthor("");
-    setNewUrl("");
-  };
+    dispatch(addBlog({ ...newBlog, likes: 0 }))
+
+    setNewTitle("")
+    setNewAuthor("")
+    setNewUrl("")
+  }
 
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={handleAdd}>
         <div>
           title:
           <input
@@ -61,11 +65,7 @@ const BlogForm = ({ createNewBlog }) => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-BlogForm.propTypes = {
-  createNewBlog: PropTypes.func.isRequired,
-};
-
-export default BlogForm;
+export default BlogForm
