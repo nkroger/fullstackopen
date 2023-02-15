@@ -12,10 +12,20 @@ const blogSlice = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
+    removeBlog(state, action) {
+      return state.filter((b) => b.id !== action.payload)
+    },
+    updateBlog(state, action) {
+      const updatedBlog = action.payload
+      const id = updatedBlog.id
+
+      return state.map((blog) => (blog.id !== id ? blog : updatedBlog))
+    },
   },
 })
 
-export const { appendBlog, setBlogs } = blogSlice.actions
+export const { appendBlog, setBlogs, removeBlog, updateBlog } =
+  blogSlice.actions
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -32,6 +42,31 @@ export const addBlog = (content) => {
       dispatch(setSuccessMsg(`New blog ${newBlog.title} added!`))
     } catch (error) {
       dispatch(setErrorMsg(error.message))
+    }
+  }
+}
+
+export const deleteBlog = (blogToDelete) => {
+  return async (dispatch) => {
+    try {
+      await blogService.deleteBlog(blogToDelete)
+      dispatch(setSuccessMsg(`Blog ${blogToDelete.title} deleted!`))
+      dispatch(removeBlog(blogToDelete.id))
+    } catch (error) {
+      dispatch(setErrorMsg(`Deleting blog failed. ${error.message}`))
+    }
+  }
+}
+
+export const addLike = (blogToLike) => {
+  return async (dispatch) => {
+    try {
+      const updatedBlog = { ...blogToLike, likes: blogToLike.likes + 1 }
+      await blogService.updateLikes(updatedBlog)
+      dispatch(updateBlog(updatedBlog))
+      dispatch(setSuccessMsg(`You liked ${blogToLike.title}!`, 2))
+    } catch (error) {
+      dispatch(setErrorMsg(`Liking blog failed. ${error.message}`))
     }
   }
 }

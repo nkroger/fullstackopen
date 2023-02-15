@@ -9,15 +9,15 @@ import Notifications from "./components/Notification"
 import Togglable from "./components/Togglable"
 import { initializeBlogs } from "./reducers/blogReducer"
 import { useDispatch } from "react-redux"
+import { setSuccessMsg, setErrorMsg } from "./reducers/notificationReducer"
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
@@ -46,37 +46,17 @@ const App = () => {
       setUser(user)
       setUsername("")
       setPassword("")
-      setSuccessMessage(`Logged in as ${user.username}`)
+      setSuccessMsg(`Logged in as ${user.username}`)
       setTimeout(() => {
-        setSuccessMessage(null)
+        setSuccessMsg(null)
       }, 3000)
     } catch (exception) {
-      setErrorMessage("wrong credentials")
+      setErrorMsg("wrong credentials")
       setTimeout(() => {
-        setErrorMessage(null)
+        setErrorMsg(null)
       }, 3000)
     }
   }
-
-  // NOTE: not sure that's the neatest way to add the new blog
-  // const createBlog = async (newBlog) => {
-  //   try {
-  //     const res = await blogService.create(newBlog)
-  //     const id = res.user
-  //     res.user = { username: user.username, name: user.name, id: id }
-  //     setBlogs(blogs.concat(res))
-  //     setSuccessMessage(`A new blog '${res.title}' by ${res.author} added!`)
-  //     setTimeout(() => {
-  //       setSuccessMessage(null)
-  //     }, 3000)
-  //     blogFormRef.current.toggleVisibility()
-  //   } catch (exception) {
-  //     setErrorMessage("Adding blog failed")
-  //     setTimeout(() => {
-  //       setErrorMessage(null)
-  //     }, 3000)
-  //   }
-  // }
 
   // const deleteBlog = async (blogToDelete) => {
   //   if (
@@ -100,7 +80,7 @@ const App = () => {
   //   }
   // }
 
-  // likes can overflow?
+  //likes can overflow?
   // const addLikeFor = async (id) => {
   //   const blog = blogs.find((b) => b.id === id)
   //   const newBlog = { ...blog, likes: blog.likes + 1 }
@@ -118,9 +98,9 @@ const App = () => {
   const logout = () => {
     setUser(null)
     window.localStorage.removeItem("loggedInBlogUser")
-    setSuccessMessage("Logged out")
+    setSuccessMsg("Logged out")
     setTimeout(() => {
-      setSuccessMessage(null)
+      setSuccessMsg(null)
     }, 3000)
   }
 
@@ -155,8 +135,8 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notifications.ErrorNotification message={errorMessage} />
-      <Notifications.SuccessNotification message={successMessage} />
+      <Notifications.ErrorNotification />
+      <Notifications.SuccessNotification />
       {user === null ? (
         loginForm()
       ) : (
@@ -166,7 +146,7 @@ const App = () => {
           <Togglable buttonLabel="add blog" ref={blogFormRef}>
             <BlogForm />
           </Togglable>
-          <BlogList />
+          <BlogList user={user} />
         </div>
       )}
     </div>
