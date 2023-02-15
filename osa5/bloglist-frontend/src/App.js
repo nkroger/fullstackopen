@@ -3,18 +3,17 @@ import { useState, useEffect, useRef } from "react"
 import BlogForm from "./components/BlogForm"
 import BlogList from "./components/BlogList"
 import blogService from "./services/blogs"
-import loginService from "./services/login"
 import LoggedUser from "./components/LoggedUser"
 import Notifications from "./components/Notification"
 import Togglable from "./components/Togglable"
 import { initializeBlogs } from "./reducers/blogReducer"
-import { useDispatch } from "react-redux"
-import { setSuccessMsg, setErrorMsg } from "./reducers/notificationReducer"
+import { useDispatch, useSelector } from "react-redux"
+import { setSuccessMsg } from "./reducers/notificationReducer"
+import { setUser, login, logout } from "./reducers/userReducer"
 
 const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -26,82 +25,22 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedInBlogUser")
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [dispatch])
 
   const blogFormRef = useRef()
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername("")
-      setPassword("")
-      setSuccessMsg(`Logged in as ${user.username}`)
-      setTimeout(() => {
-        setSuccessMsg(null)
-      }, 3000)
-    } catch (exception) {
-      setErrorMsg("wrong credentials")
-      setTimeout(() => {
-        setErrorMsg(null)
-      }, 3000)
-    }
+    dispatch(login({ username, password }))
   }
 
-  // const deleteBlog = async (blogToDelete) => {
-  //   if (
-  //     window.confirm(
-  //       `Delete blog ${blogToDelete.title} by ${blogToDelete.author}?`
-  //     )
-  //   ) {
-  //     try {
-  //       await blogService.deleteBlog(blogToDelete)
-  //       setBlogs(blogs.filter((b) => b.id !== blogToDelete.id))
-  //       setSuccessMessage("Blog deleted")
-  //       setTimeout(() => {
-  //         setSuccessMessage(null)
-  //       }, 3000)
-  //     } catch (exception) {
-  //       setErrorMessage("Deletion failed\n" + exception)
-  //       setTimeout(() => {
-  //         setErrorMessage(null)
-  //       }, 3000)
-  //     }
-  //   }
-  // }
-
-  //likes can overflow?
-  // const addLikeFor = async (id) => {
-  //   const blog = blogs.find((b) => b.id === id)
-  //   const newBlog = { ...blog, likes: blog.likes + 1 }
-  //   try {
-  //     const returnedBlog = await blogService.updateLikes(newBlog)
-  //     setBlogs(blogs.map((b) => (b.id !== id ? b : returnedBlog)))
-  //   } catch (exception) {
-  //     setErrorMessage("Updating likes failed\n" + exception)
-  //     setTimeout(() => {
-  //       setErrorMessage(null)
-  //     }, 3000)
-  //   }
-  // }
-
-  const logout = () => {
-    setUser(null)
+  const handleLogout = () => {
+    dispatch(logout())
     window.localStorage.removeItem("loggedInBlogUser")
     setSuccessMsg("Logged out")
-    setTimeout(() => {
-      setSuccessMsg(null)
-    }, 3000)
   }
 
   const loginForm = () => (
@@ -132,6 +71,8 @@ const App = () => {
     </form>
   )
 
+  const user = useSelector((state) => state.user)
+
   return (
     <div>
       <h2>blogs</h2>
@@ -141,12 +82,12 @@ const App = () => {
         loginForm()
       ) : (
         <div>
-          <LoggedUser name={user.name} logoutHandler={() => logout()} />
+          <LoggedUser name={user.name} logoutHandler={() => handleLogout()} />
           <br />
           <Togglable buttonLabel="add blog" ref={blogFormRef}>
             <BlogForm />
           </Togglable>
-          <BlogList user={user} />
+          <BlogList />
         </div>
       )}
     </div>
