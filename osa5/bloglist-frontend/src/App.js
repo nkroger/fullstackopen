@@ -7,9 +7,47 @@ import LoggedUser from "./components/LoggedUser"
 import Notifications from "./components/Notification"
 import Togglable from "./components/Togglable"
 import { initializeBlogs } from "./reducers/blogReducer"
+import { initializeUsers } from "./reducers/usersReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { setSuccessMsg } from "./reducers/notificationReducer"
 import { setUser, login, logout } from "./reducers/userReducer"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route /*useNavigate*/,
+} from "react-router-dom"
+
+const Users = () => {
+  const users = useSelector((state) => state.users)
+  const blogCounts = users
+    .map((u) => ({ ...u, count: u.blogs.length }))
+    .sort((a, b) => b.count - a.count)
+
+  return (
+    <>
+      <div>
+        {" "}
+        <h2>Users</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>blogs created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {blogCounts.map((user) => (
+            <tr key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.count}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
 
 const App = () => {
   const [username, setUsername] = useState("")
@@ -19,6 +57,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -87,9 +129,15 @@ const App = () => {
           <Togglable buttonLabel="add blog" ref={blogFormRef}>
             <BlogForm />
           </Togglable>
-          <BlogList />
+          {/*<BlogList />*/}
         </div>
       )}
+      <Router>
+        <Routes>
+          <Route path="/" element={<BlogList />} />
+          <Route path="/users" element={<Users />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
