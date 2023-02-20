@@ -34,6 +34,7 @@ blogsRouter.post("/", async (request, response) => {
     url: body.url,
     user: userId,
     likes: body.likes === undefined ? 0 : body.likes,
+    comments: [],
   });
 
   const savedBlog = await blog.save();
@@ -42,6 +43,17 @@ blogsRouter.post("/", async (request, response) => {
   await user.save();
 
   response.status(201).json(savedBlog.toJSON());
+});
+
+blogsRouter.post("/:id/comments", async (request, response) => {
+  const body = request.body.comment;
+  const update = { $push: { comments: body } };
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, update, {
+    new: true,
+  });
+
+  response.status(201).json(updatedBlog.toJSON());
 });
 
 blogsRouter.put("/:id", async (request, response) => {

@@ -521,6 +521,46 @@ Content-Type: application/json
 // Keep-Alive: timeout=5
 // Request duration: 0.180079s
 #+END_SRC
+**Add comment
+#+NAME: add_blog_comment
+#+begin_src restclient
+POST http://localhost:3000/api/blogs/63ef7ceb1f250a084041c77d/comments
+Content-Type: application/json
+{
+  "comment": "this is another comment"
+}
+#+end_src
+
+#+RESULTS: add_blog_comment
+#+BEGIN_SRC js
+{
+  "comments": [
+    "test comment please ignore",
+    "test comment please ignore"
+  ],
+  "title": "Testiblogi",
+  "author": "Kirjailija",
+  "url": "www.kirjailija.fi/blogi/1",
+  "user": "63ea3c015996085457c3a4d8",
+  "likes": 0,
+  "id": "63ef7ceb1f250a084041c77d"
+}
+// POST http://localhost:3000/api/blogs/63ef7ceb1f250a084041c77d/comments
+// HTTP/1.1 201 Created
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 225
+// etag: W/"e1-f2PWdcuL+Ct32AdPK1OhCjTnMHc"
+// date: Mon, 20 Feb 2023 09:28:36 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.100340s
+#+END_SRC
+
+#+RESULTS:
 
 * Login
 ** Login test
