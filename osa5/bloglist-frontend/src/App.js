@@ -13,7 +13,7 @@ import { initializeUsers } from "./reducers/usersReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { setSuccessMsg } from "./reducers/notificationReducer"
 import { setUser, login, logout } from "./reducers/userReducer"
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+import { Routes, Route, Link } from "react-router-dom"
 
 const Users = () => {
   const users = useSelector((state) => state.users)
@@ -47,6 +47,10 @@ const Users = () => {
       </table>
     </>
   )
+}
+
+const padding = {
+  paddingRight: 5,
 }
 
 const App = () => {
@@ -117,6 +121,19 @@ const App = () => {
 
   return (
     <div>
+      <div>
+        <Link style={padding} to="/">
+          Blogs
+        </Link>
+        <Link style={padding} to="/users">
+          Users
+        </Link>
+        {user === null ? (
+          <></>
+        ) : (
+          <LoggedUser name={user.name} logoutHandler={() => handleLogout()} />
+        )}
+      </div>
       <h2>blogs</h2>
       <Notifications.ErrorNotification />
       <Notifications.SuccessNotification />
@@ -124,22 +141,18 @@ const App = () => {
         loginForm()
       ) : (
         <div>
-          <LoggedUser name={user.name} logoutHandler={() => handleLogout()} />
-          <br />
           <Togglable buttonLabel="add blog" ref={blogFormRef}>
             <BlogForm />
           </Togglable>
           {/*<BlogList />*/}
         </div>
       )}
-      <Router>
-        <Routes>
-          <Route path="/" element={<BlogList />} />
-          <Route path="/users/:id" element={<User />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/blogs/:id" element={<Blog />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<BlogList />} />
+        <Route path="/users/:id" element={<User />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/blogs/:id" element={<Blog />} />
+      </Routes>
     </div>
   )
 }
