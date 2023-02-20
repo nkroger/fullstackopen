@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react"
 //import Blog from "./components/Blog"
 import BlogForm from "./components/BlogForm"
 import BlogList from "./components/BlogList"
+import BlogView from "./components/BlogView"
+import User from "./components/User"
 import blogService from "./services/blogs"
 import LoggedUser from "./components/LoggedUser"
 import Notifications from "./components/Notification"
@@ -11,11 +13,7 @@ import { initializeUsers } from "./reducers/usersReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { setSuccessMsg } from "./reducers/notificationReducer"
 import { setUser, login, logout } from "./reducers/userReducer"
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route /*useNavigate*/,
-} from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 const Users = () => {
   const users = useSelector((state) => state.users)
@@ -39,7 +37,9 @@ const Users = () => {
         <tbody>
           {blogCounts.map((user) => (
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td>
+                <Link to={`/users/${user.id}`}>{user.name}</Link>
+              </td>
               <td>{user.count}</td>
             </tr>
           ))}
@@ -135,7 +135,9 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<BlogList />} />
+          <Route path="/users/:id" element={<User />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/blogs/:id" element={<BlogView />} />
         </Routes>
       </Router>
     </div>
