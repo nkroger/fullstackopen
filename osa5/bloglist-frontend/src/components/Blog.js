@@ -1,12 +1,18 @@
-import { useState } from "react"
 import { deleteBlog, addLike } from "../reducers/blogReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { Link, useMatch } from "react-router-dom"
 
-const Blog = ({ blog }) => {
-  const [visible, setVisible] = useState(false)
+const Blog = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
+  const match = useMatch("/blogs/:id")
+  const blog = useSelector((state) =>
+    state.blogs.find((b) => b.id === match.params.id)
+  )
+
+  if (!blog) {
+    return null
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -14,17 +20,6 @@ const Blog = ({ blog }) => {
     border: "solid",
     borderWidth: 1,
     marginBottom: 5,
-  }
-
-  const showWhenVisible = { display: visible ? "" : "none" }
-
-  const toggleVisiblity = () => {
-    setVisible(!visible)
-  }
-
-  const buttonLabel = () => {
-    const label = visible ? "hide" : "view"
-    return label
   }
 
   const deleteHandler = () => {
@@ -40,19 +35,18 @@ const Blog = ({ blog }) => {
   return (
     <div style={blogStyle}>
       <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}{" "}
-      <button onClick={toggleVisiblity}>{buttonLabel()}</button>
-      <div style={showWhenVisible}>
-        {blog.url} <br />
+      <div>
+        <a href={blog.url}>{blog.url}</a> <br />
         likes {blog.likes}
+        <button onClick={() => likeHandler()}>like</button>
         <br />
-        {blog.user.name}
+        Added by {blog.user.name}
         {user.username === blog.user.username && (
           <>
             <br />
             <button onClick={() => deleteHandler()}>Delete</button>
           </>
         )}
-        <button onClick={() => likeHandler()}>like</button>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 //import Blog from "./components/Blog"
 import BlogForm from "./components/BlogForm"
 import BlogList from "./components/BlogList"
-import BlogView from "./components/BlogView"
+import Blog from "./components/Blog"
 import User from "./components/User"
 import blogService from "./services/blogs"
 import LoggedUser from "./components/LoggedUser"
@@ -137,7 +137,7 @@ const App = () => {
           <Route path="/" element={<BlogList />} />
           <Route path="/users/:id" element={<User />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/blogs/:id" element={<BlogView />} />
+          <Route path="/blogs/:id" element={<Blog />} />
         </Routes>
       </Router>
     </div>

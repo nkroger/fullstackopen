@@ -16,8 +16,8 @@ const BlogView = () => {
       <h2>
         {blog.title} - {blog.author}
       </h2>
+      <a href={blog.url}>{blog.url}</a> <br />
       {blog.likes} likes
-      <p>Added by {blog.user.name}</p>
     </div>
   )
 }
