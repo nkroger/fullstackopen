@@ -3,35 +3,26 @@
 * Users
 ** List users
 #+begin_src restclient
-GET http://localhost:3000/api/users
+GET http://localhost:3003/api/users
 #+end_src
 
 #+RESULTS:
-#+BEGIN_SRC js
-[
-  {
-    "username": "ka",
-    "name": "Karl Ankka",
-    "id": "62a85c866b71183324e61660"
-  },
-  {
-    "username": "",
-    "name": "Palle Ankka",
-    "id": "62aadd976b71183324e61665"
-  }
-]
-// GET http://localhost:3000/api/users
+#+begin_example
+,#+BEGIN_SRC js
+[]
+// GET http://localhost:3003/api/users
 // HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Access-Control-Allow-Origin: *
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 140
-// ETag: W/"8c-Je/E5vieHkML3q+6hIjOduvFHyo"
-// Date: Thu, 16 Jun 2022 07:37:07 GMT
+// Content-Length: 2
+// ETag: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+// Date: Mon, 13 Feb 2023 13:32:13 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.062372s
-#+END_SRC
+// Request duration: 0.090179s
+,#+END_SRC
+#+end_example
 
 ** Create user
 #+NAME: create_user
@@ -48,21 +39,24 @@ Content-Type: application/json
 #+RESULTS: create_user
 #+BEGIN_SRC js
 {
+  "blogs": [],
   "username": "karl",
   "name": "Karl Kustaa",
-  "id": "63187fb5bfe8263c403a40fd"
+  "id": "63ea3bf25996085457c3a4d5"
 }
 // POST http://localhost:3000/api/users
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 72
-// ETag: W/"48-WVP79yX4d0zHBGN2nLovDUC/D/E"
-// Date: Wed, 07 Sep 2022 11:25:41 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.102286s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 83
+// etag: W/"53-4kBsQ9z2N9dpD5aojVixHH2DZZI"
+// date: Mon, 13 Feb 2023 13:32:34 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.283898s
 #+END_SRC
 
 #+NAME: create_user2
@@ -82,19 +76,21 @@ Content-Type: application/json
   "blogs": [],
   "username": "blogginfan",
   "name": "Virpi Virveli",
-  "id": "631b52603a9c557ef2235f8c"
+  "id": "63ea3c015996085457c3a4d8"
 }
 // POST http://localhost:3000/api/users
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 91
-// ETag: W/"5b-z7WxcpOHwZnYZvn5oE9t+TQBKEU"
-// Date: Fri, 09 Sep 2022 14:49:04 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.170682s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 91
+// etag: W/"5b-lssZyfEZKc7LGpTLcVuc3U2jccs"
+// date: Mon, 13 Feb 2023 13:32:49 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.188127s
 #+END_SRC
 
 #+NAME: create_user3
@@ -111,19 +107,24 @@ Content-Type: application/json
 #+RESULTS: create_user3
 #+BEGIN_SRC js
 {
-  "error": "username must be unique"
+  "blogs": [],
+  "username": "yetanotheruser",
+  "name": "Katariina Suuri",
+  "id": "63ea3d445996085457c3a4e0"
 }
 // POST http://localhost:3000/api/users
-// HTTP/1.1 400 Bad Request
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 35
-// ETag: W/"23-dMOcSs8vZ/uesN0cuPdC8EaSTAE"
-// Date: Sun, 11 Sep 2022 08:52:02 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.131463s
+// HTTP/1.1 201 Created
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 97
+// etag: W/"61-T97cvaVQMjN3UKuDBpvR+UsDFWs"
+// date: Mon, 13 Feb 2023 13:38:12 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.182659s
 #+END_SRC
 
 #+RESULTS: testi
@@ -162,7 +163,7 @@ Content-Type: application/json
 ** List  blogs
 ** Create blog
    :PROPERTIES:
-   :header-args+: :var token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJsb2dnaW5mYW4iLCJpZCI6IjYzMWI1MjYwM2E5YzU1N2VmMjIzNWY4YyIsImlhdCI6MTY2MjczNTE5M30.S7sLfkRI-ee-Iyl3SjzlwjEa_p0WX7VbOF29Fjk_9OU"
+   :header-args+: :var token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzZWEzYmYyNTk5NjA4NTQ1N2MzYTRkNSIsImlhdCI6MTY3NjI5NTgyMn0.MVj3_QLYlEyHMgW0yC24PO-8i3Jv4XcUhznpviMq1kE"
    :END:
 
 #+NAME: save-login
@@ -182,14 +183,14 @@ Content-Type: application/json
 POST http://localhost:3000/api/login
 Content-type: application/json
 {
-  "username": "yetanotheruser",
-  "password": "suurtakinsuurempisalaisuus"
+  "username": "blogginfan",
+  "password": "tosihyväsalasana"
 }
 #+end_src
 
-#+RESULTS[ea4d035ae59b88708391c6678685a82d4c5791a9]: login
+#+RESULTS[82e0267e7cb60f3a1a92cf9f97e552bbfc002269]: login
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJsb2dnaW5mYW4iLCJpZCI6IjYzMWI1MjYwM2E5YzU1N2VmMjIzNWY4YyIsImlhdCI6MTY2MjczNTE5M30.S7sLfkRI-ee-Iyl3SjzlwjEa_p0WX7VbOF29Fjk_9OU",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJsb2dnaW5mYW4iLCJpZCI6IjYzZWEzYzAxNTk5NjA4NTQ1N2MzYTRkOCIsImlhdCI6MTY3NjI5NjIyMH0.YRc7ImQnike6lUCNCYrtnyEc24PYI1hcTNguBQsiUhQ",
   "username": "blogginfan",
   "name": "Virpi Virveli"
 }
@@ -205,7 +206,7 @@ Save token using save-login:
 #+RESULTS:
 
 #+RESULTS: token
-: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzMTg3ZmI1YmZlODI2M2M0MDNhNDBmZCIsImlhdCI6MTY2MjcyNjM2OH0.ATw9c0LL1OJr_MAesGYcIZVdJa5ejwQPohnnAJjEJ6Q
+: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthcmwiLCJpZCI6IjYzZWEzYmYyNTk5NjA4NTQ1N2MzYTRkNSIsImlhdCI6MTY3NjI5NTgyMn0.MVj3_QLYlEyHMgW0yC24PO-8i3Jv4XcUhznpviMq1kE
 
 #+NAME: create_blog
 #+begin_src restclient
@@ -218,29 +219,6 @@ Authorization: Bearer :token
   "url": "www.blogi.fi/toimiikouserextractor"
 }
 #+end_src
-
-#+RESULTS: create_blog
-#+BEGIN_SRC js
-{
-  "title": "Testiblogi 2 - Sähköinen boogaloo",
-  "author": "Bertil Blogger",
-  "url": "www.blogi.fi/toimiikouserextractor",
-  "user": "631b52603a9c557ef2235f8c",
-  "likes": 0,
-  "id": "631b7418c8e43ac7770a3753"
-}
-// POST http://localhost:3000/api/blogs
-// HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 192
-// ETag: W/"c0-Fd18Ypbkigqhvt1YdhfGSc40Y2U"
-// Date: Fri, 09 Sep 2022 17:12:56 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.098824s
-#+END_SRC
 
 #+NAME: create_blog2
 #+begin_src restclient
@@ -295,21 +273,23 @@ Authorization: Bearer :token
   "title": "React Patterns",
   "author": "Michael Chan",
   "url": "https://www.reactpatterns.com",
-  "user": "63187fb5bfe8263c403a40fd",
+  "user": "63ea3d445996085457c3a4e0",
   "likes": 0,
-  "id": "631b51d03a9c557ef2235f84"
+  "id": "63ea3e135996085457c3a4e7"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 164
-// ETag: W/"a4-dXFOKdRmqKwHfQL3MZeA6axf2S4"
-// Date: Fri, 09 Sep 2022 14:46:40 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.058831s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 164
+// etag: W/"a4-8UONLRuUKgKjykrhk3pWg+BUESw"
+// date: Mon, 13 Feb 2023 13:41:39 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.161837s
 #+END_SRC
 
 #+NAME: create_blog_gotostatement
@@ -330,21 +310,23 @@ Authorization: Bearer :token
   "title": "Go To Statement Considered Harmful",
   "author": "Edsger W. Dijkstra",
   "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-  "user": "63187fb5bfe8263c403a40fd",
+  "user": "63ea3d445996085457c3a4e0",
   "likes": 0,
-  "id": "631b51df3a9c557ef2235f88"
+  "id": "63ea3e485996085457c3a4eb"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 246
-// ETag: W/"f6-9BPwcQGDM3kvL2MpMad7W51+LWs"
-// Date: Fri, 09 Sep 2022 14:46:55 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.042624s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 246
+// etag: W/"f6-4aLDp+1B8cFMtWWSNt5M4cXT3SU"
+// date: Mon, 13 Feb 2023 13:42:32 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.123631s
 #+END_SRC
 
 #+NAME: create_blog_canonicalstringreduction
@@ -365,21 +347,23 @@ Authorization: Bearer :token
   "title": "Canonical string reduction",
   "author": "Edsger W. Dijkstra",
   "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-  "user": "631b52603a9c557ef2235f8c",
+  "user": "63ea3bf25996085457c3a4d5",
   "likes": 0,
-  "id": "631b53b03a9c557ef2235f90"
+  "id": "63ea3fd05996085457c3a4f4"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 217
-// ETag: W/"d9-SxduVamV/89PqRuHLLwYWQQUjuM"
-// Date: Fri, 09 Sep 2022 14:54:40 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.049139s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 217
+// etag: W/"d9-uj545PjhSL8wQXXGKfFj1k7N2qc"
+// date: Mon, 13 Feb 2023 13:49:04 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.152781s
 #+END_SRC
 
 #+NAME: create_blog_firstclasstests
@@ -400,21 +384,23 @@ Authorization: Bearer :token
   "title": "First class tests",
   "author": "Robert C. Martin",
   "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-  "user": "631b52603a9c557ef2235f8c",
+  "user": "63ea3bf25996085457c3a4d5",
   "likes": 0,
-  "id": "631b53d53a9c557ef2235f96"
+  "id": "63ea3fe75996085457c3a4fa"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 211
-// ETag: W/"d3-jrO3QQP7RDW9caFWdGRXXBDaU+c"
-// Date: Fri, 09 Sep 2022 14:55:17 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.030824s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 211
+// etag: W/"d3-1xaSB0Lk6OrI99zLooLC4DRmsdI"
+// date: Mon, 13 Feb 2023 13:49:28 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.343280s
 #+END_SRC
 
 #+NAME: create_blog_tddharmarchitecture
@@ -435,21 +421,23 @@ Authorization: Bearer :token
   "title": "TDD harm architecture",
   "author": "Robert C. Martin",
   "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-  "user": "631b52603a9c557ef2235f8c",
+  "user": "63ea3bf25996085457c3a4d5",
   "likes": 0,
-  "id": "631b53e33a9c557ef2235f9a"
+  "id": "63ea403a5996085457c3a501"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 221
-// ETag: W/"dd-4JKNgpuxGqd+b9nacCU/eaz12RI"
-// Date: Fri, 09 Sep 2022 14:55:31 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.044564s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 221
+// etag: W/"dd-+VuLn1lot/wbVYgqXDweHn4ECiE"
+// date: Mon, 13 Feb 2023 13:50:50 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.141789s
 #+END_SRC
 
 #+NAME: create_blog_typewars
@@ -470,21 +458,23 @@ Authorization: Bearer :token
   "title": "Type wars",
   "author": "Robert C. Martin",
   "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-  "user": "631b52603a9c557ef2235f8c",
+  "user": "63ea3bf25996085457c3a4d5",
   "likes": 0,
-  "id": "631b53fd3a9c557ef2235f9e"
+  "id": "63ea40415996085457c3a505"
 }
 // POST http://localhost:3000/api/blogs
 // HTTP/1.1 201 Created
-// X-Powered-By: Express
-// Access-Control-Allow-Origin: *
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 195
-// ETag: W/"c3-m+v9w5bWJrSFVkv26/Y37lcurVU"
-// Date: Fri, 09 Sep 2022 14:55:57 GMT
-// Connection: keep-alive
-// Keep-Alive: timeout=5
-// Request duration: 0.026016s
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 195
+// etag: W/"c3-g7ukAh13bT1FNSJcU9IzhrMIx6g"
+// date: Mon, 13 Feb 2023 13:50:57 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.112292s
 #+END_SRC
 
 Delete?
@@ -531,6 +521,46 @@ Content-Type: application/json
 // Keep-Alive: timeout=5
 // Request duration: 0.180079s
 #+END_SRC
+**Add comment
+#+NAME: add_blog_comment
+#+begin_src restclient
+POST http://localhost:3000/api/blogs/63ef7ceb1f250a084041c77d/comments
+Content-Type: application/json
+{
+  "comment": "this is another comment"
+}
+#+end_src
+
+#+RESULTS: add_blog_comment
+#+BEGIN_SRC js
+{
+  "comments": [
+    "test comment please ignore",
+    "test comment please ignore"
+  ],
+  "title": "Testiblogi",
+  "author": "Kirjailija",
+  "url": "www.kirjailija.fi/blogi/1",
+  "user": "63ea3c015996085457c3a4d8",
+  "likes": 0,
+  "id": "63ef7ceb1f250a084041c77d"
+}
+// POST http://localhost:3000/api/blogs/63ef7ceb1f250a084041c77d/comments
+// HTTP/1.1 201 Created
+// x-powered-by: Express
+// access-control-allow-origin: *
+// Access-Control-Allow-Methods: *
+// Access-Control-Allow-Headers: *
+// content-type: application/json; charset=utf-8
+// content-length: 225
+// etag: W/"e1-f2PWdcuL+Ct32AdPK1OhCjTnMHc"
+// date: Mon, 20 Feb 2023 09:28:36 GMT
+// connection: close
+// Vary: Accept-Encoding
+// Request duration: 0.100340s
+#+END_SRC
+
+#+RESULTS:
 
 * Login
 ** Login test

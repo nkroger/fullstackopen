@@ -1,28 +1,32 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { addBlog } from "../reducers/blogReducer"
 
-const BlogForm = ({ createNewBlog }) => {
-  const [title, setNewTitle]   = useState('')
-  const [author, setNewAuthor] = useState('')
-  const [url, setNewUrl]       = useState('')
+const BlogForm = () => {
+  const [title, setNewTitle] = useState("")
+  const [author, setNewAuthor] = useState("")
+  const [url, setNewUrl] = useState("")
+  const dispatch = useDispatch()
 
-  const addBlog = (event) => {
+  const handleAdd = (event) => {
     event.preventDefault()
-    createNewBlog({
+    const newBlog = {
       title: title,
       author: author,
-      url: url
-    })
+      url: url,
+    }
 
-    setNewTitle('')
-    setNewAuthor('')
-    setNewUrl('')
+    dispatch(addBlog({ ...newBlog, likes: 0 }))
+
+    setNewTitle("")
+    setNewAuthor("")
+    setNewUrl("")
   }
 
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={handleAdd}>
         <div>
           title:
           <input
@@ -31,7 +35,7 @@ const BlogForm = ({ createNewBlog }) => {
             value={title}
             name="title"
             onChange={({ target }) => setNewTitle(target.value)}
-            placeholder='blog title'
+            placeholder="blog title"
           />
         </div>
         <div>
@@ -42,7 +46,7 @@ const BlogForm = ({ createNewBlog }) => {
             value={author}
             name="author"
             onChange={({ target }) => setNewAuthor(target.value)}
-            placeholder='blog author'
+            placeholder="blog author"
           />
         </div>
         <div>
@@ -53,17 +57,15 @@ const BlogForm = ({ createNewBlog }) => {
             value={url}
             name="url"
             onChange={({ target }) => setNewUrl(target.value)}
-            placeholder='blog url'
+            placeholder="blog url"
           />
         </div>
-        <button id="save-button" type="submit">create</button>
+        <button id="save-button" type="submit">
+          create
+        </button>
       </form>
     </div>
   )
-}
-
-BlogForm.propTypes = {
-  createNewBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
