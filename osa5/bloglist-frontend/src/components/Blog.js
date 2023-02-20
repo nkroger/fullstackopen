@@ -1,6 +1,6 @@
 import { deleteBlog, addLike } from "../reducers/blogReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useMatch } from "react-router-dom"
+import { useMatch } from "react-router-dom"
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -32,21 +32,40 @@ const Blog = () => {
     dispatch(addLike(blog))
   }
 
+  const blogComments = () => {
+    const comments = blog.comments
+    if (!comments) {
+      return null
+    }
+
+    return (
+      <div>
+        <h2>comments</h2>
+        <ul>
+          {comments.map((comment, i) => {
+            return <li key={i}>{comment}</li>
+          })}
+        </ul>
+      </div>
+    )
+  }
+
   return (
     <div style={blogStyle}>
-      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}{" "}
+      {blog.title} {blog.author}{" "}
       <div>
         <a href={blog.url}>{blog.url}</a> <br />
         likes {blog.likes}
         <button onClick={() => likeHandler()}>like</button>
         <br />
         Added by {blog.user.name}
-        {user.username === blog.user.username && (
+        {user && user.username === blog.user.username && (
           <>
             <br />
             <button onClick={() => deleteHandler()}>Delete</button>
           </>
         )}
+        {blogComments()}
       </div>
     </div>
   )
