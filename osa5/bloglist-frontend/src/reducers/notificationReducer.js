@@ -42,6 +42,7 @@ export const setErrorMsg = (message, duration = 5) => {
     if (errorId) {
       clearTimeout(errorId)
     }
+    console.log(message)
     dispatch(setError(message))
     errorId = setTimeout(() => {
       dispatch(clearError())
