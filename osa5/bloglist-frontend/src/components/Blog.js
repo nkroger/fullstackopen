@@ -16,14 +16,6 @@ const Blog = () => {
     return null
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   const deleteHandler = () => {
     if (window.confirm(`Delete blog ${blog.title} by ${blog.author}?`)) {
       dispatch(deleteBlog(blog))
@@ -69,7 +61,7 @@ const Blog = () => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="container">
       {blog.title} {blog.author}{" "}
       <div>
         <a href={blog.url}>{blog.url}</a> <br />

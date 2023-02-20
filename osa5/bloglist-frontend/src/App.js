@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setSuccessMsg } from "./reducers/notificationReducer"
 import { setUser, login, logout } from "./reducers/userReducer"
 import { Routes, Route, Link } from "react-router-dom"
+import { Form, Button, Navbar, Nav } from "react-bootstrap"
 
 const Users = () => {
   const users = useSelector((state) => state.users)
@@ -90,50 +91,50 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id="username"
+    <Form onSubmit={handleLogin}>
+      <Form.Group>
+        <Form.Label>username:</Form.Label>
+        <Form.Control
           type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+          name="username"
+          onChange={(event) => setUsername(event.target.value)}
         />
-      </div>
-      <div>
-        password
-        <input
-          id="password"
-          type="text"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
+        <Form.Label>password:</Form.Label>
+        <Form.Control
+          type="password"
+          onChange={(event) => setPassword(event.target.value)}
         />
-      </div>
-      <button id="login-button" type="submit">
-        login
-      </button>
-    </form>
+        <Button variant="primary" type="submit">
+          login
+        </Button>
+      </Form.Group>
+    </Form>
   )
 
   const user = useSelector((state) => state.user)
 
   return (
-    <div>
-      <div>
-        <Link style={padding} to="/">
-          Blogs
-        </Link>
-        <Link style={padding} to="/users">
-          Users
-        </Link>
-        {user === null ? (
-          <></>
-        ) : (
-          <LoggedUser name={user.name} logoutHandler={() => handleLogout()} />
-        )}
-      </div>
+    <div className="container">
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav.Link href="#" as="span">
+            <Link style={padding} to="/">
+              Blogs
+            </Link>
+          </Nav.Link>
+          <Nav.Link href="#" as="span">
+            <Link style={padding} to="/users">
+              Users
+            </Link>
+          </Nav.Link>
+          {user === null ? (
+            <></>
+          ) : (
+            <LoggedUser name={user.name} logoutHandler={() => handleLogout()} />
+          )}
+        </Navbar.Collapse>
+      </Navbar>
       <h2>blogs</h2>
       <Notifications.ErrorNotification />
       <Notifications.SuccessNotification />

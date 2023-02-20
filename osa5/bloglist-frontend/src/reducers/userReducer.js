@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import loginService from "../services/login"
+import blogService from "../services/blogs"
 import { setErrorMsg, setSuccessMsg } from "./notificationReducer"
 
 const userSlice = createSlice({
@@ -24,6 +25,8 @@ export const login = ({ username, password }) => {
         username,
         password,
       })
+      blogService.setToken(user.token)
+      window.localStorage.setItem("loggedInBlogUser", JSON.stringify(user))
       dispatch(setUser(user))
       setSuccessMsg(`Logged in as ${user.username}`)
     } catch (error) {
