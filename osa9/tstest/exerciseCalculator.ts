@@ -8,6 +8,30 @@ interface trainingResults {
   average: number
 }
 
+interface ExerciseInputs {
+  target: number,
+  log: number[]
+}
+
+const parseNumber = (input: string): number => {
+  const n = Number(input);
+  if (isNaN(n)) throw new Error(`Argument ${input} is not a number!`);
+  return n;
+}
+
+const parseArguments = (args: string[]): ExerciseInputs => {
+  if (args.length < 4) throw new Error("Not enough arguments");
+
+  const target = Number(args[2]);
+  if (isNaN(target)) throw new Error("Training target was not numberic");
+
+  const log = args.slice(3).map(n => parseNumber(n));
+  return {
+    target,
+    log
+  }
+}
+
 const describeRating = (rating: number): string => {
   if (rating < 1) {
     return "poor effort"
@@ -40,4 +64,14 @@ const calculateExercises = (log: number[], target: number): trainingResults => {
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+//console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const { target, log } = parseArguments(process.argv);
+  console.log(calculateExercises(log, target));
+} catch (error: unknown) {
+  let errorMessage = "Something went wrong.";
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}
