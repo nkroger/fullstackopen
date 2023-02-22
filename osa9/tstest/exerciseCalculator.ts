@@ -17,7 +17,7 @@ const parseNumber = (input: string): number => {
   const n = Number(input);
   if (isNaN(n)) throw new Error(`Argument ${input} is not a number!`);
   return n;
-}
+};
 
 const parseArguments = (args: string[]): ExerciseInputs => {
   if (args.length < 4) throw new Error("Not enough arguments");
@@ -29,24 +29,24 @@ const parseArguments = (args: string[]): ExerciseInputs => {
   return {
     target,
     log
-  }
-}
+  };
+};
 
 const describeRating = (rating: number): string => {
   if (rating < 1) {
-    return "poor effort"
+    return "poor effort";
   }
   if (rating < 1.5) {
-    return "not great"
+    return "not great";
   }
   if (rating < 2) {
-    return "not too bad, but could be better"
+    return "not too bad, but could be better";
   }
   if (rating < 2.5) {
-    return "good job"
+    return "good job";
   }
-  return "awesome!"
-}
+  return "awesome!";
+};
 
 const calculateExercises = (log: number[], target: number): trainingResults => {
   const sum = log.reduce( (a, b) => a+b, 0);
@@ -61,8 +61,8 @@ const calculateExercises = (log: number[], target: number): trainingResults => {
     ratingDescription: describeRating(rating),
     target,
     average: avg
-  }
-}
+  };
+};
 
 //console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
 try {
