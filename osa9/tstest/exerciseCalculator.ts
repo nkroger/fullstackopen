@@ -8,12 +8,12 @@ interface trainingResults {
   average: number
 }
 
-interface ExerciseInputs {
+/*interface ExerciseInputs {
   target: number,
   log: number[]
-}
+}*/
 
-const parseNumber = (input: string): number => {
+/*const parseNumber = (input: string): number => {
   const n = Number(input);
   if (isNaN(n)) throw new Error(`Argument ${input} is not a number!`);
   return n;
@@ -30,7 +30,7 @@ const parseArguments = (args: string[]): ExerciseInputs => {
     target,
     log
   };
-};
+};*/
 
 const describeRating = (rating: number): string => {
   if (rating < 1) {
@@ -48,7 +48,7 @@ const describeRating = (rating: number): string => {
   return "awesome!";
 };
 
-const calculateExercises = (log: number[], target: number): trainingResults => {
+export const calculateExercises = (log: number[], target: number): trainingResults => {
   const sum = log.reduce( (a, b) => a+b, 0);
   const avg = sum / log.length;
   const trainingDays = log.filter(d => d > 0).length;
@@ -65,7 +65,7 @@ const calculateExercises = (log: number[], target: number): trainingResults => {
 };
 
 //console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
-try {
+/*try {
   const { target, log } = parseArguments(process.argv);
   console.log(calculateExercises(log, target));
 } catch (error: unknown) {
@@ -74,4 +74,4 @@ try {
     errorMessage += ' Error: ' + error.message;
   }
   console.log(errorMessage);
-}
+}*/
