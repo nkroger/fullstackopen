@@ -29,7 +29,7 @@ const DiaryForm = ({ onSubmit}: Props) => {
           date:
           <input
             id="flight-date"
-            type="text"
+            type="date"
             value={date}
             name="date"
             onChange={({ target }) => setDate(target.value)}
@@ -37,23 +37,18 @@ const DiaryForm = ({ onSubmit}: Props) => {
         </div>
         <div>
           visibility:
-          <input
-            id="flight-visibility"
-            type="text"
-            value={visibility}
-            name="visibility"
-            onChange={({ target }) => setVisibility(target.value)}
-          />
+          <input type="radio" name="visibility" onChange={() => setVisibility("great")} /> great
+          <input type="radio" name="visibility" onChange={() => setVisibility("good")} /> good
+          <input type="radio" name="visibility" onChange={() => setVisibility("ok")} /> ok
+          <input type="radio" name="visibility" onChange={() => setVisibility("poor")} /> poor
         </div>
         <div>
           weather:
-          <input
-            id="flight-weather"
-            type="text"
-            value={weather}
-            name="weather"
-            onChange={({ target }) => setWeather(target.value)}
-          />
+          <input type="radio" name="weather" onChange={() => setWeather("sunny")} /> sunny
+          <input type="radio" name="weather" onChange={() => setWeather("rainy")} /> rainy
+          <input type="radio" name="weather" onChange={() => setWeather("cloudy")} /> cloudy
+          <input type="radio" name="weather" onChange={() => setWeather("stormy")} /> stormy
+          <input type="radio" name="weather" onChange={() => setWeather("windy")} /> windy
         </div>
         <div>
           comment:
