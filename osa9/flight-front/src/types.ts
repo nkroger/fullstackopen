@@ -19,3 +19,10 @@ export interface DiaryEntry {
   weather: Weather;
   comment: string;
 }
+
+export interface DiaryFormValues {
+  date: string;
+  visibility: string;
+  weather: string;
+  comment: string;
+}
