@@ -14,7 +14,7 @@ app.use((req, _res, next) => {
   console.log("Body:", req.body);
   console.log("---");
   next();
-})
+});
 
 app.get("/api/ping", (_req, res) => {
   console.log("Someone pinged");

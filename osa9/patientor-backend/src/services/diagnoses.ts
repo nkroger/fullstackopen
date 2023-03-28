@@ -1,4 +1,4 @@
-import diagnoseData from "../../data/diagnoses"
+import diagnoseData from "../../data/diagnoses";
 
 import { Diagnose } from "../types";
 
@@ -10,4 +10,4 @@ const getEntries = (): Diagnose[] => {
 
 export default {
   getEntries
-}
+};
