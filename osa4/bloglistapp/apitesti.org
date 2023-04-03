@@ -598,7 +598,7 @@ Content-type: application/json
 POST http://localhost:3003/exercises
 Content-Type: application/json
 {
-  "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+  "daily_exercises": [3, 2, 20, 0, 3, 0, 2.5],
   "target": 2.5
 }
 #+end_src
@@ -608,24 +608,24 @@ Content-Type: application/json
 {
   "report": {
     "periodLength": 7,
-    "trainingDays": 4,
-    "success": false,
-    "rating": 0.2142857142857142,
-    "ratingDescription": "poor effort",
+    "trainingDays": 5,
+    "success": true,
+    "rating": 3,
+    "ratingDescription": "awesome!",
     "target": 2.5,
-    "average": 1.2142857142857142
+    "average": 4.357142857142857
   }
 }
 // POST http://localhost:3003/exercises
 // HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 166
-// ETag: W/"a6-UV/j+H3PLFZUV31//UAKP+MfdKI"
-// Date: Thu, 23 Feb 2023 06:52:46 GMT
+// Content-Length: 144
+// ETag: W/"90-smUVA+HaFYucjhSfqzsA7Q2WAqU"
+// Date: Thu, 23 Feb 2023 08:09:54 GMT
 // Connection: keep-alive
 // Keep-Alive: timeout=5
-// Request duration: 0.027338s
+// Request duration: 0.015259s
 #+END_SRC
 
 #+NAME: test_webE_broken_request
@@ -633,33 +633,23 @@ Content-Type: application/json
 POST http://localhost:3003/exercises
 Content-Type: application/json
 {
-  "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
-  "target": 2.x5
+  "target": 2.5
 }
 #+end_src
 
 #+RESULTS: test_webE_broken_request
-#+BEGIN_SRC html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>SyntaxError: Unexpected token r in JSON at position 24<br> &nbsp; &nbsp;at JSON.parse (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at parse (/Users/niklaskroger/dev/fullstackopen/osa9/tstest/node_modules/express/node_modules/body-parser/lib/types/json.js:89:19)<br> &nbsp; &nbsp;at /Users/niklaskroger/dev/fullstackopen/osa9/tstest/node_modules/express/node_modules/body-parser/lib/read.js:128:18<br> &nbsp; &nbsp;at AsyncResource.runInAsyncScope (node:async_hooks:204:9)<br> &nbsp; &nbsp;at invokeCallback (/Users/niklaskroger/dev/fullstackopen/osa9/tstest/node_modules/express/node_modules/raw-body/index.js:231:16)<br> &nbsp; &nbsp;at done (/Users/niklaskroger/dev/fullstackopen/osa9/tstest/node_modules/express/node_modules/raw-body/index.js:220:7)<br> &nbsp; &nbsp;at IncomingMessage.onEnd (/Users/niklaskroger/dev/fullstackopen/osa9/tstest/node_modules/express/node_modules/raw-body/index.js:280:7)<br> &nbsp; &nbsp;at IncomingMessage.emit (node:events:513:28)<br> &nbsp; &nbsp;at endReadableNT (node:internal/streams/readable:1359:12)<br> &nbsp; &nbsp;at processTicksAndRejections (node:internal/process/task_queues:82:21)</pre>
-</body>
-</html>
-
-<!-- POST http://localhost:3003/exercises -->
-<!-- HTTP/1.1 400 Bad Request -->
-<!-- X-Powered-By: Express -->
-<!-- Content-Security-Policy: default-src 'none' -->
-<!-- X-Content-Type-Options: nosniff -->
-<!-- Content-Type: text/html; charset=utf-8 -->
-<!-- Content-Length: 1248 -->
-<!-- Date: Thu, 23 Feb 2023 07:06:16 GMT -->
-<!-- Connection: keep-alive -->
-<!-- Keep-Alive: timeout=5 -->
-<!-- Request duration: 0.007344s -->
+#+BEGIN_SRC js
+{
+  "error": "parameters missing"
+}
+// POST http://localhost:3003/exercises
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 30
+// ETag: W/"1e-OB8DWbYgkFKxA+z9hDQtAiA3G5Y"
+// Date: Thu, 23 Feb 2023 08:10:07 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.008762s
 #+END_SRC
