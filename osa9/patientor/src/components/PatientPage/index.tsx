@@ -1,15 +1,16 @@
 //import {} from "@mui/material";
 import { useState, useEffect } from "react";
 
-import { Patient, Entry } from "../../types";
+import { Patient, Entry, Diagnosis } from "../../types";
 
 import patientService from "../../services/patients";
 
 interface Props {
   id: string | undefined
+  diagnoses: Diagnosis[]
 }
 
-const PatientPage = ({ id } : Props ) => {
+const PatientPage = ({ id, diagnoses } : Props ) => {
   const [patient, setPatient] = useState<Patient | null>(null);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const PatientPage = ({ id } : Props ) => {
               {entry.diagnosisCodes && 
                 <ul>
                   {entry.diagnosisCodes.map( (code, i) => {
-                    return (<li key={i}>{code}</li>)
+                    return (<li key={i}>{code} {diagnoses.find( d => d.code === code )?.name}</li>)
                   })}
                 </ul>
               }

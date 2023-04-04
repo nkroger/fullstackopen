@@ -39,7 +39,7 @@ const patients: Patient[] = [
         type: 'OccupationalHealthcare',
         specialist: 'MD House',
         employerName: 'HyPD',
-        diagnosisCodes: ['Z57.1', 'Z74.3', 'M51.2'],
+        diagnosisCodes: ['Z57.1', 'Z74.3', 'M51.2', 'ABC.123'],
         description:
           'Patient mistakenly found himself in a nuclear plant waste site without protection gear. Very minor radiation poisoning. ',
         sickLeave: {

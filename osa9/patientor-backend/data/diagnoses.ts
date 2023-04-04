@@ -75,6 +75,9 @@ const data = [
     "code": "H35.29",
     "name": "Other proliferative retinopathy",
     "latin": "Alia retinopathia proliferativa"
+  },
+  { "code": "ABC.123",
+    "latin": "Dolor sit amet"
   }
 ];
 
