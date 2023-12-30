@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Patient, Entry, Diagnosis } from "../../types";
 
 import patientService from "../../services/patients";
+import EntryDetails from "./EntryDetails";
 
 interface Props {
   id: string | undefined
@@ -40,21 +41,9 @@ const PatientPage = ({ id, diagnoses } : Props ) => {
           <h2>
             entries
           </h2>
-          {patient.entries.map( entry => {
-            return (
-            <div key={entry.id}>
-              {entry.date} <em>{entry.description}</em>
-              {entry.diagnosisCodes && 
-                <ul>
-                  {entry.diagnosisCodes.map( (code, i) => {
-                    return (<li key={i}>{code} {diagnoses.find( d => d.code === code )?.name}</li>)
-                  })}
-                </ul>
-              }
-            </div>
-            )
-          })
-          }
+          {patient.entries.map( entry => 
+            <EntryDetails entry={entry} key={entry.id} />
+          )}
         </div>
       </div>
     )
