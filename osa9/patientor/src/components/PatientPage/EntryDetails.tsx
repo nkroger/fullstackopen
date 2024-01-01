@@ -34,45 +34,47 @@ const HealthIcon: React.FC<{ rating: HealthCheckRating }> = ({ rating }) => {
     )
 }
 
-const DiagnosisCodes: React.FC<{ codes: Array<Diagnosis["code"]> | undefined }> = ({ codes }) => {
+const DiagnosisCodes: React.FC<{ codes: Array<Diagnosis["code"]> | undefined, diagnoses: Diagnosis[] }> = ({ codes, diagnoses }) => {
     if (!codes) return null;
     
     return (
-        <ul>
-            {codes.map( code => {
-                return <li key={code}>{code}</li>
-            })}
-        </ul>
+        <div>
+            <ul>
+                {diagnoses.map(diagnosis => {
+                    return <li key={diagnosis.code}>{diagnosis.code} {diagnosis.name}</li>
+                })}
+            </ul>
+        </div>
     )
 }
 
-const HospitalEntry: React.FC<{ entry: Entry }> = ({ entry }) => {
+const HospitalEntry: React.FC<EntryDetailProps> = ({ entry, diagnoses }) => {
     if (entry.type !== "Hospital") {
         return null;
     }
     return (
-       <EntryComponent icon={<LocalHospitalIcon />} entry={entry}>
+       <EntryComponent icon={<LocalHospitalIcon />} entry={entry} diagnoses={diagnoses} >
         <p>Discharge date: {entry.discharge.date}</p>
         <p>      Criteria: {entry.discharge.criteria}</p>        
        </EntryComponent>
     )
 }
 
-const OccupationalEntry: React.FC<{ entry: Entry }> = ({ entry }) => {
+const OccupationalEntry: React.FC<EntryDetailProps> = ({ entry, diagnoses }) => {
     if (entry.type !== "OccupationalHealthcare") { return null; }
     
     return (
-       <EntryComponent icon={<WorkIcon />} entry={entry} employer={entry.employerName}>
+       <EntryComponent icon={<WorkIcon />} entry={entry} employer={entry.employerName} diagnoses={diagnoses} >
         {entry.sickLeave && <p>Sick leave: {entry.sickLeave.startDate} to {entry.sickLeave.endDate}</p>}
        </EntryComponent>
     )
 }
 
-const HealthCheckEntry: React.FC<{ entry: Entry }> = ({ entry }) => {
+const HealthCheckEntry: React.FC<EntryDetailProps> = ({ entry, diagnoses }) => {
     if (entry.type !== "HealthCheck") { return null; }
 
     return (
-        <EntryComponent icon={<MedicalInformationIcon />} entry={entry}>
+        <EntryComponent icon={<MedicalInformationIcon />} entry={entry} diagnoses={diagnoses} >
             <HealthIcon rating={entry.healthCheckRating} />
         </EntryComponent>
     )
@@ -82,30 +84,38 @@ type EntryProps = {
     entry: Entry,
     icon: ReactNode,
     children?: ReactNode,
-    employer?: string
+    employer?: string,
+    diagnoses: Diagnosis[]
 }
 
-const EntryComponent: React.FC<EntryProps> = ({ entry, icon, children, employer }) => {
+const EntryComponent: React.FC<EntryProps> = ({ entry, icon, children, employer, diagnoses }) => {
     return (
         <Card variant="outlined" style={{ marginBottom: "1rem", paddingInline: "4px" }}>
             {entry.date} {icon} {employer && employer}<br />
             <p>{entry.description}</p>
+            {entry.diagnosisCodes &&
+                <DiagnosisCodes codes={entry.diagnosisCodes} diagnoses={diagnoses} />}
             <div>{children}</div>
             <p>Diagnosis by {entry.specialist}</p>
         </Card>
     )
 }
 
-const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
-    switch (entry.type) {
+type EntryDetailProps = {
+    entry: Entry,
+    diagnoses: Diagnosis[]
+}
+
+const EntryDetails: React.FC<EntryDetailProps> = (props) => {
+    switch (props.entry.type) {
         case "Hospital":
-            return <HospitalEntry entry={entry} />
+            return <HospitalEntry {...props} />
         case "OccupationalHealthcare":
-            return <OccupationalEntry entry={entry} />
+            return <OccupationalEntry {...props} />
         case "HealthCheck":
-            return <HealthCheckEntry entry={entry} />
+            return <HealthCheckEntry {...props} />
         default:
-            return assertNever(entry)
+            return assertNever(props.entry)
     }
 }
 
