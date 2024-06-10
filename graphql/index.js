@@ -1,6 +1,7 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone');
 const { GraphQLError } = require('graphql');
+//const gql = require('graphql-tag');
 const { v4: uuid } = require('uuid');
 
 let persons = [
@@ -25,8 +26,9 @@ let persons = [
     id: '3d599471-3436-11e9-bc57-8b80ba54c431'
   },
 ]
+const gql = String.raw
 
-const typeDefs = `
+const typeDefs = gql`
   type Address {
     street: String!
     city: String!
@@ -55,6 +57,10 @@ const typeDefs = `
       phone: String
       street: String!
       city: String!
+    ): Person
+    editNumber(
+      name: String!
+      phone: String!
     ): Person
   }
 `
@@ -96,6 +102,16 @@ const resolvers = {
       const person = { ...args, id: uuid() }
       persons = persons.concat(person)
       return person
+    },
+    editNumber: (root, args) => {
+      const person = persons.find(p => p.name === args.name)
+      if (!person) {
+        return null
+      }
+
+      const updatedPerson = { ...person, phone: args.phone }
+      persons = persons.map( p => p.name === args.name ? updatedPerson : p )
+      return updatedPerson
     }
   }
 
