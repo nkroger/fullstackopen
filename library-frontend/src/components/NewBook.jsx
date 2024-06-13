@@ -1,4 +1,6 @@
+import { useMutation } from '@apollo/client'
 import { useState } from 'react'
+import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -6,6 +8,14 @@ const NewBook = (props) => {
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  
+  const [ createBook ] = useMutation(CREATE_BOOK, {
+    refetchQueries: [ { query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    onError: (error) => {
+      const messages = error.graphQLErrors.map( e => e.message ).join('\n')
+      props.setError(messages)
+    } 
+  })
 
   if (!props.show) {
     return null
@@ -15,12 +25,21 @@ const NewBook = (props) => {
     event.preventDefault()
 
     console.log('add book...')
-
-    setTitle('')
-    setPublished('')
-    setAuthor('')
-    setGenres([])
-    setGenre('')
+    
+    const year = parseInt(published)
+    
+    if (year) {
+      createBook({ variables: { title, author, published: year, genres }})
+  
+      setTitle('')
+      setPublished('')
+      setAuthor('')
+      setGenres([])
+      setGenre('')
+    } else {
+      setPublished('')
+      props.setError("Published year should be an integer!")
+    }
   }
 
   const addGenre = () => {

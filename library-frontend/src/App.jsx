@@ -2,9 +2,31 @@ import { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
+import { ALL_AUTHORS, ALL_BOOKS } from './queries';
+import { useQuery } from '@apollo/client';
+import Notify from './components/Notify';
 
 const App = () => {
   const [page, setPage] = useState("authors");
+  const [errorMessage, setErrorMessage] = useState(null)
+  const authorResult = useQuery(ALL_AUTHORS, {
+    // 
+  })
+  const booksResult = useQuery(ALL_BOOKS, {
+
+  })
+
+  if (authorResult.loading || booksResult.loading) {
+    return <div>loading...</div>
+  }
+
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+
 
   return (
     <div>
@@ -14,11 +36,13 @@ const App = () => {
         <button onClick={() => setPage("add")}>add book</button>
       </div>
 
-      <Authors show={page === "authors"} />
+      <Notify errorMessage={errorMessage} />
 
-      <Books show={page === "books"} />
+      <Authors show={page === "authors"} authors={authorResult.data.allAuthors} />
 
-      <NewBook show={page === "add"} />
+      <Books show={page === "books"} books={booksResult.data.allBooks} />
+
+      <NewBook show={page === "add"} setError={notify} />
     </div>
   );
 };
