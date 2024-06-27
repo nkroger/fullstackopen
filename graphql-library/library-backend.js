@@ -182,16 +182,49 @@ const resolvers = {
     addBook: async (root, args) => {
       let author = await Author.findOne({ name: args.author })
       if (!author) {
-        const newAuthor = new Author({ name: args.author })
-        author = await newAuthor.save()
+        try {
+          const newAuthor = new Author({ name: args.author })
+          author = await newAuthor.save()
+        } catch (error) {
+          throw new GraphQLError('Adding author failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.author,
+              error
+            }
+          })
+        }
       }
       const book = new Book({ ...args, author: author })
-      return  book.save()
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError('Adding book failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.title,
+            error
+          }
+        })
+      }
+
+      return book
     },
     editBirthYear: async (root, args) => {
       const author = await Author.findOne({ name: args.name })
-      author.born = args.setBornTo
-      return author.save()
+      try {
+        author.born = args.setBornTo
+        await author.save()
+      } catch (error) {
+        throw new GraphQLError('Editing birth year failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        })
+      }
+      return author
     }
   }
 }
