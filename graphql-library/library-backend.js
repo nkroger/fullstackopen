@@ -301,9 +301,27 @@ const resolvers = {
   }
 }
 
+const LOGGER = {
+  requestDidStart(requestContext) {
+    console.log('New request:')
+    console.log(requestContext.request.query)
+    console.log(requestContext.request.variables)
+    return {
+      didEncounterErrors(requestContext) {
+        console.log("Error:")
+        console.log(requestContext.errors)
+      },
+      willSendResponse(requestContext) {
+        console.log("Response:", requestContext.response)
+      }
+    }
+  }
+}
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  plugins: [LOGGER]
 })
 
 startStandaloneServer(server, {
