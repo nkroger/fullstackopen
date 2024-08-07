@@ -36,6 +36,8 @@ const App = () => {
     client.resetStore()
   }
 
+  const userFav = "crime"
+
 
   return (
     <div>
@@ -45,6 +47,7 @@ const App = () => {
         { token && (
           <>
             <button onClick={() => setPage("add")}>add book</button>
+            <button onClick={() => setPage("recommended")}>recommended</button>
             <button onClick={() => logout()}>logout</button>
           </>
         )}
@@ -58,6 +61,8 @@ const App = () => {
       <Authors show={page === "authors"} authors={authorResult.data.allAuthors} />
 
       <Books show={page === "books"} books={booksResult.data.allBooks} />
+
+      <Books show={page === "recommended"} books={booksResult.data.allBooks} favouriteGenre={userFav} />
 
       <NewBook show={page === "add"} setError={notify} />
 
