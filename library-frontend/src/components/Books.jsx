@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { BOOKS_GENRE } from '../queries'
 
 const Books = ({ show, genreFilter = null, children = null }) => {
-  const [genre, setGenre] = useState(genreFilter ?? "")
+  const [genre, setGenreFilter] = useState(genreFilter ?? "")
  
-  const booksResult = useQuery(BOOKS_GENRE, {
+  const { loading, data, refetch } = useQuery(BOOKS_GENRE, {
     variables: {
       genreFilter: genre
     }
@@ -16,18 +16,24 @@ const Books = ({ show, genreFilter = null, children = null }) => {
     return null
   }
 
-  if (booksResult.loading) {
+  if (loading) {
     return <div>loading...</div>
   }
 
-  if (!booksResult.data) {
+  if (!data) {
     return <div>no data :(</div>
   }
 
-  const books = booksResult.data.allBooks
+  const books = data.allBooks
   const genres = [...new Set(books.flatMap( book => book.genres ))]
 
   const filteredBooks = genre ? books.filter( b => b.genres.includes(genre) ) : books
+
+  const setGenre = (newGenre) => {
+    refetch({ genreFilter: newGenre })
+    setGenreFilter(newGenre)
+  }
+
 
   return (
     <div>
