@@ -60,9 +60,11 @@ const App = () => {
 
       <Authors show={page === "authors"} authors={authorResult.data.allAuthors} />
 
-      <Books show={page === "books"} books={booksResult.data.allBooks} />
+      <Books show={page === "books"} />
 
-      <Books show={page === "recommended"} books={booksResult.data.allBooks} favouriteGenre={userFav} />
+      <Books show={page === "recommended"} genreFilter={userFav} >
+        <p>in your favourite genre <b>{userFav}</b></p>
+      </Books>
 
       <NewBook show={page === "add"} setError={notify} />
 

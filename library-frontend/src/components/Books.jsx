@@ -1,32 +1,40 @@
+import { useQuery } from '@apollo/client'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { BOOKS_GENRE } from '../queries'
 
-const Books = ({ books, show, favouriteGenre = null }) => {
-  const [genre, setGenre] = useState(favouriteGenre)
+const Books = ({ show, genreFilter = null, children = null }) => {
+  const [genre, setGenre] = useState(genreFilter ?? "")
+ 
+  const booksResult = useQuery(BOOKS_GENRE, {
+    variables: {
+      genreFilter: genre
+    }
+  })
+  
   if (!show) {
     return null
   }
 
+  if (booksResult.loading) {
+    return <div>loading...</div>
+  }
+
+  if (!booksResult.data) {
+    return <div>no data :(</div>
+  }
+
+  const books = booksResult.data.allBooks
   const genres = [...new Set(books.flatMap( book => book.genres ))]
 
   const filteredBooks = genre ? books.filter( b => b.genres.includes(genre) ) : books
-
-  const description = () => {
-    if (!genre) return null
-
-    return (
-      <p>
-        in {favouriteGenre ? 'your favourite genre' : 'genre'} <b>{genre}</b>
-      </p>
-    )
-  }
 
   return (
     <div>
       <h2>books</h2>
 
       {
-        description()
+        children
       }
       <table>
         <tbody>
@@ -44,27 +52,20 @@ const Books = ({ books, show, favouriteGenre = null }) => {
           ))}
         </tbody>
       </table>
-      {!favouriteGenre && genres.map( (g) => (
+      {!genreFilter && genres.map( (g) => (
         <button key={g} onClick={() => setGenre(g)}>{g}</button>
       ))}
       {
-        !favouriteGenre && <button onClick={() => setGenre(null)}>all genres</button>
+        !genreFilter && <button onClick={() => setGenre("")}>all genres</button>
       }
     </div>
   )
 }
 
 Books.propTypes = {
-  books: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      author: PropTypes.object.isRequired,
-      published: PropTypes.number.isRequired,
-      genres: PropTypes.arrayOf(PropTypes.string),
-    })
-  ).isRequired,
+  genreFilter: PropTypes.string,
   show: PropTypes.bool.isRequired,
-  favouriteGenre: PropTypes.string
+  children: PropTypes.node
 }
 
 
