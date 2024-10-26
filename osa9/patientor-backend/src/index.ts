@@ -23,6 +23,7 @@ app.get("/api/ping", (_req, res) => {
 
 app.use("/api/diagnoses", diagnoseRouter);
 
+// TODO zod validation, middleware?
 app.use("/api/patients", patientsRouter);
 
 app.listen(PORT, () => {
