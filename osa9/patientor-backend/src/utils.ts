@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { NewPatient, NewEntry, Gender, Entry, Diagnosis, Discharge, HealthCheckRating } from "./types";
 
 const isString = (text: unknown): text is string => {
@@ -27,17 +28,6 @@ const parseDate = (dateInput: unknown): string => {
   return dateInput;
 };
 
-const isGender = (param: string): param is Gender => {
-  return Object.values(Gender).map( g => g.toString()).includes(param);
-};
-
-const parseGender = (gender: unknown): Gender => {
-  if (!isString(gender) || !isGender(gender)) {
-    throw new Error("Incorrect or missing gender: " + gender);
-  }
-  return gender;
-};
-
 const isEntryType = (param: string): param is "Hospital" | "HealthCheck" | "OccupationalHealthcare" => {
   return ["Hospital", "HealthCheck", "OccupationalHealthcare"].includes( param )
 }
@@ -50,25 +40,43 @@ const parseEntryType = (entryType: unknown): "Hospital" | "HealthCheck" | "Occup
   return entryType;
 }
 
+// const diagnosisSchema = z.object({
+//   code: z.string(),
+//   name: z.string(),
+//   latin: z.string().optional()
+// })
+
+/*const baseEntrySchema = z.object({
+  description: z.string(),
+  date: z.string().date(),
+  specialist: z.string(),
+  diagnosisCodes: z.array(diagnosisSchema.pick({code: true})).optional()
+})*/
+
+/*const dischargeSchema = z.object({
+  date: z.string().date(),
+  criteria: z.string()
+})
+
+const sickLeaveSchema = z.object({
+  startDate: z.string().date(),
+  endDate: z.string().date()
+})*/
+
+
+const newPatientSchema = z.object({
+  name: z.string(),
+  dateOfBirth: z.string().date(),
+  ssn: z.string(),
+  gender: z.nativeEnum(Gender),
+  occupation: z.string(),
+})
+
 const toNewPatient = (object: unknown): NewPatient => {
-  if (!object || typeof object !== "object") {
-    throw new Error("Incorrect or missing data");
-  }
-
-  if ("name" in object && "dateOfBirth" in object && "ssn" in object && "gender" in object && "occupation" in object) {
-    const newPatient: NewPatient = {
-      name: parseString(object.name),
-      dateOfBirth: parseDate(object.dateOfBirth),
-      ssn: parseString(object.ssn),
-      gender: parseGender(object.gender),
-      occupation: parseString(object.occupation),
-      entries: []
-    };
-    return newPatient;
-  }
-
-  throw new Error("Incorrect data: some fields are missing");
-};
+  const parsedPatient = newPatientSchema.parse(object);
+  const newPatient = {...parsedPatient, entries: []};
+  return newPatient; 
+}
 
 const parseHealthCheckRating = (rating: unknown): HealthCheckRating => {
   if (!isNumber(rating) || 0 > rating || rating > 3) {

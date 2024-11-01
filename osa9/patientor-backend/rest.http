@@ -6,11 +6,29 @@ Content-Type: application/json
     "type":"Hospital",
     "specialist":"MD House",
     "diagnosisCodes":["M51.2"],
-    "description":"mething gone badly  wrong",
+    "description":"something gone badly  wrong",
     "discharge":
         {
             "date":"2016-01-16",
             "criteria":"Patient is back to normal." 
         }
-    
 }
+
+###
+
+POST http://localhost:3001/api/patients HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Test Patient",
+    "dateOfBirth": "1911-11-11",
+    "ssn": "123123666",
+    "gender": "male",
+    "occupation": "Testing Engineer"
+}
+
+###
+
+GET http://localhost:3001/api/patients
+
+##¤
