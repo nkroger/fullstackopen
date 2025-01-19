@@ -1,7 +1,7 @@
 //import {} from "@mui/material";
 import { useState, useEffect } from "react";
 
-import { Patient, Entry, Diagnosis } from "../../types";
+import { Patient, Entry, Diagnosis, EntryFormValues } from "../../types";
 
 import patientService from "../../services/patients";
 import EntryDetails from "./EntryDetails";
@@ -15,6 +15,7 @@ interface Props {
 
 const PatientPage = ({ id, diagnoses }: Props) => {
   const [patient, setPatient] = useState<Patient | null>(null);
+  const [entries, setEntries] = useState<Array<Entry>>([]);
   const [formVisible, setFormVisible] = useState(false);
 
   const showForm = (): void => {
@@ -32,11 +33,27 @@ const PatientPage = ({ id, diagnoses }: Props) => {
     setFormVisible(false);
   }*/
 
+  const submitNewEntry = async (values: EntryFormValues) => {
+    if (id) {
+
+      try {
+        const newEntry = await patientService.addEntry(values, id);
+        //patient?.entries.push(newEntry);
+        setEntries(entries.concat(newEntry));
+        //setPatient(newEntry);
+        setFormVisible(false);
+      } catch (e: unknown) {
+        console.log("Unknown error", e);
+      }
+    }
+  }
+
   useEffect(() => {
     const fetchPatient = async () => {
       if (id) {
         const foundPatient = await patientService.getPatient(id);
         setPatient(foundPatient);
+        setEntries(foundPatient.entries);
       }
     }
     void fetchPatient();
@@ -60,12 +77,12 @@ const PatientPage = ({ id, diagnoses }: Props) => {
             Add New Entry
           </Button>
         </div>
-        { formVisible && <AddEntryForm onCancel={closeForm} onSubmit={ () => console.log("submit")} />}
+        { formVisible && <AddEntryForm onCancel={closeForm} onSubmit={submitNewEntry} />}
         <div>
           <h2>
             entries
           </h2>
-          {patient.entries.map(entry => {
+          {entries.map(entry => {
             const fullDiagnoses: Diagnosis[] = entry.diagnosisCodes
               ? entry.diagnosisCodes
                 .map(code => diagnoses.find(d => d.code === code))

@@ -90,7 +90,7 @@ type EntryProps = {
 
 const EntryComponent: React.FC<EntryProps> = ({ entry, icon, children, employer, diagnoses }) => {
     return (
-        <Card variant="outlined" style={{ marginBottom: "1rem", paddingInline: "4px" }}>
+        <Card variant="outlined" key={entry.id} style={{ marginBottom: "1rem", paddingInline: "4px" }}>
             {entry.date} {icon} {employer && employer}<br />
             <p>{entry.description}</p>
             {entry.diagnosisCodes &&

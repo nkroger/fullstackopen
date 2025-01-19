@@ -79,6 +79,16 @@ const data = [
   { "code": "ABC.123",
     "name": "ABC Test Please Ignore",
     "latin": "Dolor sit amet"
+  },
+  {
+    "code": "GL-123",
+    "name": "Wound from walking on broken glass barefooted",
+    "latin": "Glassus woundus",
+  },
+  {
+    "code": "OK-666",
+    "name": "Too tough to break",
+    "latin": "oukkis diabolicus",
   }
 ];
 

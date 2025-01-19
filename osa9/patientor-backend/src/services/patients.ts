@@ -35,8 +35,9 @@ const addPatientEntry = (id: string, newEntry: NewEntry) => {
   if (!patient) {
     throw new Error("No patient found with id: " + id);
   }
-  patient.entries.push({...newEntry, id: uuid() })
-  return patient;
+  const entry = {...newEntry, id: uuid()};
+  patient.entries.push(entry);
+  return entry;
 }
 
 export default { findById, getNonSensitive, addPatient, addPatientEntry };
