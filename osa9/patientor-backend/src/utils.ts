@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { NewPatient, NewEntry, Gender, Entry, Diagnosis, Discharge, HealthCheckRating } from "./types";
+import { NewPatient, NewEntry, Gender, Entry, Diagnosis, Discharge, HealthCheckRating, SickLeave } from "./types";
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -109,11 +109,14 @@ const parseOccupationalHealthcare = (object: unknown, newEntry: NewEntryBase): N
   if (!object || typeof object !== "object" || !('employerName' in object) || newEntry.type !== "OccupationalHealthcare") {
     throw new Error("Incorrect or missing data for Occupational Healthcare Entry");
   }
+ 
+  const hasSickLeave = ('sickLeave' in object);
+  const sickLeave = hasSickLeave ? parseSickLeave(object) : undefined;
   return {
     ...newEntry,
     type: "OccupationalHealthcare",
     employerName: parseString(object.employerName),
-
+    sickLeave
   }
 }
 
@@ -129,6 +132,21 @@ const parseDischarge = (newEntry: object): Discharge => {
   return {
     date: parseDate(discharge.date),
     criteria: parseString(discharge.criteria)
+  };
+}
+
+const parseSickLeave = (newEntry: object): SickLeave => {
+  if (!("sickLeave" in newEntry) || !newEntry.sickLeave || typeof newEntry.sickLeave !== "object" ) {
+    throw new Error("Incorrect or missing sick leave");
+  }
+
+  const sickLeave = newEntry.sickLeave;
+  if (!("startDate" in sickLeave)) { throw new Error("Sick leave start dadte missing")}
+  if (!("endDate" in sickLeave)) { throw new Error("Sick leave end dadte missing")}
+
+  return {
+    startDate: parseDate(sickLeave.startDate),
+    endDate: parseDate(sickLeave.endDate)
   };
 }
 
